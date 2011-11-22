@@ -89,19 +89,47 @@ PCS : OrderedIdentitySet {
 		^result.collect({ arg item; item.as(PCS) });
 	}
 	
-	// all the subsets of k elements
+	// all subsets of k elements
 	subsets { arg k = 2;
-		// based on fxt library
 		var nset = this.asArray;
 		var n = nset.size;
 		var kcomb = Array.series(k);
 		var last = Array.series(k, n - k);
-		var ret = Array.new;
-		var j, z;
 		
-		if(this.isEmpty or: { this.size < k }, {
+		if(nset.isEmpty or: { n < k }, {
 			^nil
 		});
+		
+		^PCS.prLexComb(nset, k, kcomb, last);
+	}
+	
+	// all variations of k elements
+	variations { arg k = 2;
+		var nset = this.asArray.copy;
+		var n = nset.size;
+		var kcomb, last;
+		var ret = [];
+		
+		if(nset.isEmpty or: { n < k }, {
+			^nil
+		});
+		
+		last = [0] ++ Array.series(k - 1, n - (k - 1));
+		n.do({
+			kcomb = Array.series(k);
+			ret = ret ++ PCS.prLexComb(nset, k, kcomb, last);
+			nset = nset.rotate(-1);
+		});
+		
+		^ret;
+	}
+	
+	// private, lexicographic order subset generator
+	*prLexComb { arg nset, k, kcomb, last;
+		// based on fxt library
+		var n = nset.size;
+		var ret = Array.new;
+		var j, z;
 		
 		ret = ret.add(kcomb.collect({ arg i; nset[i] }).as(PCS));
 		while({ kcomb != last }, {
@@ -119,16 +147,6 @@ PCS : OrderedIdentitySet {
 			});
 			ret = ret.add(kcomb.collect({ arg i; nset[i] }).as(PCS));
 		});
-		^ret;
-	}
-	
-	// all the variations of a subset of k elements
-	variations { arg k = 2;
-		
-	}
-	
-	// private
-	prLexComb { arg nset, kcomb, last;
 		^ret;
 	}
 	
@@ -179,12 +197,12 @@ PCS : OrderedIdentitySet {
 			error("PCSs of cardinal number > 8 are not supported for partitions");
 			^nil;
 		});
-		this.prPartitions(arr, arr.at(0).asArray, 0, ret);
+		PCS.prPartitions(arr, arr.at(0).asArray, 0, ret);
 		^ret.value;
 	}
 	
 	// private
-	prPartitions { arg arr, x, level, ret;
+	*prPartitions { arg arr, x, level, ret;
 		var auxRet, n;
 		
 		level = level + 1;
@@ -203,7 +221,7 @@ PCS : OrderedIdentitySet {
 			auxRet = auxRet.add(x.copy.add(n));
 			
 			auxRet.do({ arg i;
-				this.prPartitions(arr, i, level, ret);
+				PCS.prPartitions(arr, i, level, ret);
 			});
 			
 			if(level == (arr.size - 1), {
