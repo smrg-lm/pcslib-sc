@@ -3,7 +3,7 @@
 
 /*
 HACER:
-- kh, uniones, etc,
+- kh, scSetOperations, etc.
 - agregar "status" (con respecto a la forma prima Tn I, ver pcs_2txt)
 */
 
@@ -79,7 +79,8 @@ PCS : OrderedIdentitySet {
 	transposition { arg n = 0; ^(this.asArray + n mod: 12).as(PCS) }
 	multiplication { arg n = 1; ^(this.asArray * n mod: 12).as(PCS) }
 	
-	// arrays (métodos auxiliares, private, borrar? -ver más arriba-)
+	// arrays (métodos auxiliares, private
+	// borrar? -ver más arriba y los métodos pr más abajo-)
 	*inversion { arg arr; ^(12 - arr.asArray mod: 12) }
 	*transposition { arg arr, n; ^(arr.asArray + n mod: 12) }
 	*multiplication { arg arr, n; ^(arr.asArray * n mod: 12) }
@@ -164,12 +165,13 @@ PCS : OrderedIdentitySet {
 		
 		ret = this.multiVarpart([a, b]);
 		if(variations.not, {
-			ret = ret.collectAs({ arg i; i.asSet }, Set); // ...
-			ret = ret.collectAs({ arg i; i.asArray }, Array); // ...
+			ret = ret.collectAs({ arg i; i.asSet }, Set); // ...fix
+			ret = ret.collectAs({ arg i; i.asArray }, Array); // ...fix
 		});
 		^ret;
 	}
 	
+	// private, por ahora
 	multiVarpart { arg arr;
 		var parts, diff, ret = [], subs = [];
 		
@@ -250,7 +252,7 @@ PCS : OrderedIdentitySet {
 	}
 	
 	scIsSubsetOf { arg that;
-		//^that.pf.includesAll(this.pf)
+		//^that.pf.includesAll(this.pf) // no tiene sentido es lo mismo que subsetOf
 		var subSets = that.subsets(this.size);
 		var thisPf = this.pf;
 		subSets.do({ arg pcs;
@@ -277,6 +279,5 @@ PCS : OrderedIdentitySet {
 	
 	//addAll { }
 	//species { ^this.class }
-	
 	//copy { ^this.deepCopy } // SUPERCLASS FIXED
 }
