@@ -3,7 +3,13 @@
 
 /*
 HACER:
-- kh, scSetOperations, etc.
+- kh
+- medidas de similitud
+
+-- ver las divisiones de números negativos enteros y módulo, la implementación depende de esta.
+
+- hacer las permutaciones, o empelear el método de la clase array y ver en qué orden las genera (implementar con el método de la clase array si es que no realiza conversiones y reconversiones).
+- scSetOperations
 - agregar "status" (con respecto a la forma prima Tn I, ver pcs_2txt)
 */
 
@@ -29,6 +35,40 @@ PCS : OrderedIdentitySet {
 	i { ^this.inversion }
 	t { arg n = 0; ^this.transposition(n) }
 	m { arg n = 5; ^this.multiplication(n) }
+	mi { this.m.i } // shortcut, completa con la teoría
+	
+	complement {
+		^PCS('12-1').removeAll(this);
+	}
+	
+	// VER SI LAS RELACIONES SC NECESITAN CHECKEAR INVERSIONES Y TRANSPOSICIONES.
+	// sería en todas las relaciones abstractas.
+	scComplement {
+		^PCS('12-1').removeAll(this.pf).pf;
+	}
+	
+	// retorna true si this es miembro del complemento acerca de other.
+	// forma literal.
+	k { arg other;
+		var comp = other.complement;
+		
+		// precondiciones
+		if(this.size < 3 or: { other.size < 3 }
+			or: { this.size > 10 } or: { other.size > 10 }, {
+				^false
+		});
+		if(this.size == other.size or: { this.size == comp.size }, {
+			^false
+		});
+		
+		// condición literal
+		if(this.includesAll(other) or: { this.includesAll(comp) }
+			or: { other.includesAll(this) } or: { comp.includesAll(this) }, {
+			^true
+		}, {
+			^false
+		});
+	}
 	
 	primeForm {
 		var res;
@@ -37,7 +77,7 @@ PCS : OrderedIdentitySet {
 		res = this.normalPosition.asArray;
 		
 		// 4
-		res = res - res.first;
+		res = (res - res.first) mod: 12; // mod es necesario cuando quedan números neg.
 		
 		if(res.size > 2 and: {
 				(res.at(1) - res.at(0))
