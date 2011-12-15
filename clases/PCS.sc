@@ -6,7 +6,7 @@ HACER:
 - kh
 - medidas de similitud
 
--- ver las divisiones de nœmeros negativos enteros y m—dulo, la implementaci—n depende de esta.
+-- ver las divisiones de nœmeros negativos enteros y m—dulo, la implementaci—n depende de esto.
 
 - hacer las permutaciones, o empelear el mŽtodo de la clase array y ver en quŽ orden las genera (implementar con el mŽtodo de la clase array si es que no realiza conversiones y reconversiones).
 - scSetOperations
@@ -31,7 +31,6 @@ PCS : OrderedIdentitySet {
 	iv { ^SCTable.entryOf(this).at(5) }
 	cint1 { ^SCTable.entryOf(this).at(6) }
 	
-	//np { ^this.normalPosition } // no sirve si contiene repeticones.
 	i { ^this.inversion }
 	t { arg n = 0; ^this.transposition(n) }
 	m { arg n = 5; ^this.multiplication(n) }
@@ -71,47 +70,82 @@ PCS : OrderedIdentitySet {
 	}
 	
 	primeForm {
-		var res;
+		var res, resInv;
 		
-		// 1, 2 y 3
-		res = this.normalPosition.asArray;
+		res = this.normalOrder.asArray; // devuelve un pcs (mod 12) y lo convierte en arr.
+		resInv = this.i.normalOrder.asArray;
 		
-		// 4
-		res = (res - res.first) mod: 12; // mod es necesario cuando quedan nœmeros neg.
+		res = res - res.first % 12; // mod es necesario cuando quedan nœmeros neg.
+		resInv = resInv - resInv.first % 12;
 		
+		res = PCS.lexMin(res, resInv);
+		
+		/*
 		if(res.size > 2 and: {
 				(res.at(1) - res.at(0))
 				>
 				(res.wrapAt(-1) - res.wrapAt(-2))
-			}) {
+			}, {
+			"paso".postln; // NO PASA NUNCA con PCS.lexMin(res, resInv)...
 			res = res.reverse; // retro
 			res = PCS.inversion(res); // inv
 			res = res - res.first % 12;
-		};
+		});
+		*/
 		
 		^res.as(PCS);
 	}
 	
-	normalPosition {
-		var res, rotation, min = 12, auxMin = 12;
+	normalOrder {
+		var res, rotation, rotDiff, min = 12, auxMin = 12;
 		
 		// 1
-		res = this.asArray.sort;
+		rotation = this.asArray.sort;
 		
 		// 2 y 3
-		min = min(min, res.last - res.first);
-		rotation = res;
-		(res.size - 1).do({ arg i;
+		min = min(min, rotation.last - rotation.first);
+		res = rotation;
+		
+		(rotation.size - 1).do({ arg i;
 			rotation = rotation.rotate(-1);
 			rotation = rotation ++ (rotation.pop + 12);
-			auxMin = min(min, rotation.last - rotation.first);
+			rotDiff = rotation.last - rotation.first;
+			auxMin = min(min, rotDiff);
 			if(auxMin < min, {
 				min = auxMin;
 				res = rotation;
+			}, {
+				if(rotDiff == min, {
+					res = PCS.lexMin(res, rotation);
+				});
 			});
 		});
 		
 		^res.as(PCS);
+	}
+	
+	*lexMin { arg arr1, arr2;
+			var pos = 0, notBreak = true;
+			var a, b, ret;
+			
+			ret = arr1;
+			
+			while({pos < (arr1.size - 1) and: notBreak}, {
+				a = arr1.at(pos + 1) - arr1.at(pos);
+				b = arr2.at(pos + 1) - arr2.at(pos);
+				
+				if(b < a, {
+					ret = arr2;
+					notBreak = false;
+				}, {
+					if(a < b, {
+						notBreak = false;
+					});
+				});
+				
+				pos = pos + 1;
+			});
+			^ret;
 	}
 	
 	cardinal { ^this.size; }
@@ -119,8 +153,6 @@ PCS : OrderedIdentitySet {
 	transposition { arg n = 0; ^(this.asArray + n mod: 12).as(PCS) }
 	multiplication { arg n = 1; ^(this.asArray * n mod: 12).as(PCS) }
 	
-	// arrays (mŽtodos auxiliares, private
-	// borrar? -ver m‡s arriba y los mŽtodos pr m‡s abajo-)
 	*inversion { arg arr; ^(12 - arr.asArray mod: 12) }
 	*transposition { arg arr, n; ^(arr.asArray + n mod: 12) }
 	*multiplication { arg arr, n; ^(arr.asArray * n mod: 12) }
