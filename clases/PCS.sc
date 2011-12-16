@@ -43,26 +43,70 @@ PCS : OrderedIdentitySet {
 	// VER SI LAS RELACIONES SC NECESITAN CHECKEAR INVERSIONES Y TRANSPOSICIONES.
 	// ser’a en todas las relaciones abstractas.
 	scComplement {
-		^PCS('12-1').removeAll(this.pf).pf;
+		var ret = PCS('12-1').removeAll(this.pf);
+		if(ret.notEmpty, {
+			^ret.pf;
+		}, {
+			^ret;
+		});
 	}
 	
-	// retorna true si this es miembro del complemento acerca de other.
-	// forma literal.
-	k { arg other;
-		var comp = other.complement;
-		
-		// precondiciones
-		if(this.size < 3 or: { other.size < 3 }
-			or: { this.size > 10 } or: { other.size > 10 }, {
+	prKKHPreconditions { arg nexus, comp;
+		if(this.size < 3 or: { nexus.size < 3 }
+			or: { this.size > 10 } or: { nexus.size > 10 }, {
 				^false
 		});
-		if(this.size == other.size or: { this.size == comp.size }, {
+		if(this.size == nexus.size or: { this.size == comp.size }, {
 			^false
 		});
+		^true;
+	}
+	
+	prKKHSetup { arg other, type;
+		var self, nexus, comp, checkMethod;
 		
-		// condici—n literal
-		if(this.includesAll(other) or: { this.includesAll(comp) }
-			or: { other.includesAll(this) } or: { comp.includesAll(this) }, {
+		switch( type,
+			'literal', {
+				self = this;
+				nexus = other;
+				comp = other.complement;
+				checkMethod = 'includesAll';
+			},
+			'abstract', {
+				self = this.pf;
+				nexus = other.pf;
+				comp = other.scComplement;
+				// FIX, scIsSubsetOf vuelve a llamar las pf,
+				// self y nexus tal vez no sean necesarios.
+				checkMethod = 'scIsSubsetOf';
+			}
+		);
+		
+		^[self, nexus, comp, checkMethod];
+	}
+	
+	k { arg other, type = 'abstract';
+		var self, nexus, comp, checkMethod;
+		
+		#self, nexus, comp, checkMethod = prKKHSetup(this, other, type);
+		if(prKKHPreconditions(this, nexus, comp).not, { ^false });
+		
+		if( (self.perform(checkMethod, nexus) or: { self.perform(checkMethod, comp) })
+			or: (nexus.perform(checkMethod, self) or: { comp.perform(checkMethod, self) }), {
+			^true
+		}, {
+			^false
+		});
+	}
+	
+	kh { arg other, type = 'abstract';
+		var self, nexus, comp, checkMethod;
+		
+		#self, nexus, comp, checkMethod = prKKHSetup(this, other, type);
+		if(prKKHPreconditions(this, nexus, comp).not, { ^false });
+		
+		if( (self.perform(checkMethod, nexus) or: { nexus.perform(checkMethod, self) })
+			and: (self.perform(checkMethod, comp) or: { comp.perform(checkMethod, self) }), {
 			^true
 		}, {
 			^false
