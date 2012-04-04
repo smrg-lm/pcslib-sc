@@ -115,15 +115,17 @@ PCS : OrderedIdentitySet {
 	
 	primeForm {
 		var res, resInv;
-		
+
+		if(this.isEmpty, { ^PCS[] });
+
 		res = this.normalOrder.asArray; // devuelve un pcs (mod 12) y lo convierte en arr.
 		resInv = this.i.normalOrder.asArray;
-		
+
 		res = res - res.first % 12; // mod es necesario cuando quedan nœmeros neg.
 		resInv = resInv - resInv.first % 12;
-		
+
 		res = PCS.lexMin(res, resInv);
-		
+
 		/*
 		if(res.size > 2 and: {
 				(res.at(1) - res.at(0))
@@ -136,7 +138,7 @@ PCS : OrderedIdentitySet {
 			res = res - res.first % 12;
 		});
 		*/
-		
+
 		^res.as(PCS);
 	}
 	
