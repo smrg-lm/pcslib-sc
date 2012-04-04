@@ -4,7 +4,7 @@
 SCTable {
 	classvar <table;
 	classvar indexFromName, indexFromPF;
-	
+
 	*indexOf { arg x;
 		var ret;
 		if(x.class == PCS, {
@@ -30,21 +30,21 @@ SCTable {
 			^ret;
 		});
 	}
-	
+
 	*entryOf { arg x;
 		^table.at(SCTable.indexOf(x));
 	}
-	
+
 	*nameOf { arg pcs;
 		if(SCTable.indexOf(pcs).notNil, {
 			^table.at(SCTable.indexOf(pcs)).at(0);
 		}, { ^nil });
 	}
-	
+
 	*pfOf { arg name;
 		^table.at(SCTable.indexOf(name)).at(1);
 	}
-	
+
 	*initClass {
 		var time;
 		time = bench {

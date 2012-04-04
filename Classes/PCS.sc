@@ -22,7 +22,7 @@ PCS : OrderedIdentitySet {
 			^super.newFrom(SCTable.pfOf(n));
 		});
 	}
-	
+
 	name { ^SCTable.nameOf(this) }
 	pf { ^this.primeForm }
 	mmi { ^SCTable.entryOf(this).at(2) }
@@ -30,16 +30,16 @@ PCS : OrderedIdentitySet {
 	icv { ^SCTable.entryOf(this).at(4) }
 	iv { ^SCTable.entryOf(this).at(5) }
 	cint1 { ^SCTable.entryOf(this).at(6) }
-	
+
 	i { ^this.inversion }
 	t { arg n = 0; ^this.transposition(n) }
 	m { arg n = 5; ^this.multiplication(n) }
 	mi { this.m.i } // shortcut, completa con la teor’a
-	
+
 	complement {
 		^PCS('12-1').removeAll(this);
 	}
-	
+
 	// VER SI LAS RELACIONES SC NECESITAN CHECKEAR INVERSIONES Y TRANSPOSICIONES.
 	// ser’a en todas las relaciones abstractas.
 	scComplement {
@@ -50,7 +50,7 @@ PCS : OrderedIdentitySet {
 			^ret;
 		});
 	}
-	
+
 	prKKHPreconditions { arg nexus, comp;
 		if(this.size < 3 or: { nexus.size < 3 }
 			or: { this.size > 10 } or: { nexus.size > 10 }, {
@@ -61,10 +61,10 @@ PCS : OrderedIdentitySet {
 		});
 		^true;
 	}
-	
+
 	prKKHSetup { arg other, type;
 		var self, nexus, comp, checkMethod;
-		
+
 		switch( type,
 			'literal', {
 				self = this;
@@ -81,16 +81,16 @@ PCS : OrderedIdentitySet {
 				checkMethod = 'scIsSubsetOf';
 			}
 		);
-		
+
 		^[self, nexus, comp, checkMethod];
 	}
-	
+
 	k { arg other, type = 'abstract';
 		var self, nexus, comp, checkMethod;
-		
+
 		#self, nexus, comp, checkMethod = prKKHSetup(this, other, type);
 		if(prKKHPreconditions(this, nexus, comp).not, { ^false });
-		
+
 		if( (self.perform(checkMethod, nexus) or: { self.perform(checkMethod, comp) })
 			or: (nexus.perform(checkMethod, self) or: { comp.perform(checkMethod, self) }), {
 			^true
@@ -98,13 +98,13 @@ PCS : OrderedIdentitySet {
 			^false
 		});
 	}
-	
+
 	kh { arg other, type = 'abstract';
 		var self, nexus, comp, checkMethod;
-		
+
 		#self, nexus, comp, checkMethod = prKKHSetup(this, other, type);
 		if(prKKHPreconditions(this, nexus, comp).not, { ^false });
-		
+
 		if( (self.perform(checkMethod, nexus) or: { nexus.perform(checkMethod, self) })
 			and: (self.perform(checkMethod, comp) or: { comp.perform(checkMethod, self) }), {
 			^true
@@ -112,7 +112,7 @@ PCS : OrderedIdentitySet {
 			^false
 		});
 	}
-	
+
 	primeForm {
 		var res, resInv;
 
@@ -141,17 +141,17 @@ PCS : OrderedIdentitySet {
 
 		^res.as(PCS);
 	}
-	
+
 	normalOrder {
 		var res, rotation, rotDiff, min = 12, auxMin = 12;
-		
+
 		// 1
 		rotation = this.asArray.sort;
-		
+
 		// 2 y 3
 		min = min(min, rotation.last - rotation.first);
 		res = rotation;
-		
+
 		(rotation.size - 1).do({ arg i;
 			rotation = rotation.rotate(-1);
 			rotation = rotation ++ (rotation.pop + 12);
@@ -166,20 +166,20 @@ PCS : OrderedIdentitySet {
 				});
 			});
 		});
-		
+
 		^res.as(PCS);
 	}
-	
+
 	*lexMin { arg arr1, arr2;
 			var pos = 0, notBreak = true;
 			var a, b, ret;
-			
+
 			ret = arr1;
-			
+
 			while({pos < (arr1.size - 1) and: notBreak}, {
 				a = arr1.at(pos + 1) - arr1.at(pos);
 				b = arr2.at(pos + 1) - arr2.at(pos);
-				
+
 				if(b < a, {
 					ret = arr2;
 					notBreak = false;
@@ -188,68 +188,68 @@ PCS : OrderedIdentitySet {
 						notBreak = false;
 					});
 				});
-				
+
 				pos = pos + 1;
 			});
 			^ret;
 	}
-	
+
 	cardinal { ^this.size; }
 	inversion { ^(12 - this.asArray mod: 12).as(PCS) }
 	transposition { arg n = 0; ^(this.asArray + n mod: 12).as(PCS) }
 	multiplication { arg n = 1; ^(this.asArray * n mod: 12).as(PCS) }
-	
+
 	*inversion { arg arr; ^(12 - arr.asArray mod: 12) }
 	*transposition { arg arr, n; ^(arr.asArray + n mod: 12) }
 	*multiplication { arg arr, n; ^(arr.asArray * n mod: 12) }
-	
+
 	powerset {
 		var result = this.asArray.powerset;
 		^result.collect({ arg item; item.as(PCS) });
 	}
-	
+
 	// all subsets of k elements
 	subsets { arg k = 2;
 		var nset = this.asArray;
 		var n = nset.size;
 		var kcomb = Array.series(k);
 		var last = Array.series(k, n - k);
-		
+
 		if(nset.isEmpty or: { n < k }, {
 			^nil
 		});
-		
+
 		^PCS.prLexComb(nset, k, kcomb, last);
 	}
-	
+
 	// all variations of k elements
 	variations { arg k = 2;
 		var nset = this.asArray.copy;
 		var n = nset.size;
 		var kcomb, last;
 		var ret = [];
-		
+
 		if(nset.isEmpty or: { n < k }, {
 			^nil
 		});
-		
+
 		last = [0] ++ Array.series(k - 1, n - (k - 1));
 		n.do({
 			kcomb = Array.series(k);
 			ret = ret ++ PCS.prLexComb(nset, k, kcomb, last);
 			nset = nset.rotate(-1);
 		});
-		
+
 		^ret;
 	}
-	
+
 	// private, lexicographic order subset generator
 	*prLexComb { arg nset, k, kcomb, last;
 		// based on fxt library
 		var n = nset.size;
 		var ret = Array.new;
 		var j, z;
-		
+
 		ret = ret.add(kcomb.collect({ arg i; nset[i] }).as(PCS));
 		while({ kcomb != last }, {
 			j = k - 1;
@@ -268,10 +268,10 @@ PCS : OrderedIdentitySet {
 		});
 		^ret;
 	}
-	
+
 	binpart { arg a, b, variations = false;
 		var ret;
-		
+
 		if(this.size > 8, {
 			error("PCS: cardinal number > 8 are not supported for binpart");
 			^nil;
@@ -280,7 +280,7 @@ PCS : OrderedIdentitySet {
 			error("PCS: binpart arguments sum must be equal to this.size");
 			^nil;
 		});
-		
+
 		ret = this.multiVarpart([a, b]);
 		if(variations.not, {
 			ret = ret.collectAs({ arg i; i.asSet }, Set); // ...fix
@@ -288,11 +288,11 @@ PCS : OrderedIdentitySet {
 		});
 		^ret;
 	}
-	
+
 	// private, por ahora
 	multiVarpart { arg arr;
 		var parts, diff, ret = [], subs = [];
-		
+
 		if(arr.notEmpty, {
 			parts = this.subsets(arr.at(0));
 			parts.do({ arg part;
@@ -309,7 +309,7 @@ PCS : OrderedIdentitySet {
 		});
 		^ret;
 	}
-	
+
 	partitions {
 		var ret = Ref.new([]);
 		var arr = this.asArray;
@@ -320,30 +320,30 @@ PCS : OrderedIdentitySet {
 		PCS.prPartitions(arr, arr.at(0).asArray, 0, ret);
 		^ret.value;
 	}
-	
+
 	// private
 	*prPartitions { arg arr, x, level, ret;
 		var auxRet, n;
-		
+
 		level = level + 1;
 		if(level < arr.size, {
 			n = arr.at(level).asArray;
-			
+
 			if(x.containsSeqColl.not, {
 				x = x.clump(1)
 			});
-			
+
 			x.size.do({ arg i;
 				var aux = x.copy;
 				aux[i] = aux[i] ++ n;
 				auxRet = auxRet.add(aux);
 			});
 			auxRet = auxRet.add(x.copy.add(n));
-			
+
 			auxRet.do({ arg i;
 				PCS.prPartitions(arr, i, level, ret);
 			});
-			
+
 			if(level == (arr.size - 1), {
 				auxRet = auxRet.collect({ arg i;
 					i = i.collect({ arg j; j.as(PCS) });
@@ -352,23 +352,23 @@ PCS : OrderedIdentitySet {
 			});
 		});
 	}
-	
+
 	*numberOfSubsets { arg m, n = 12;
 		^(n.factorial / (m.factorial * (n - m).factorial))
 	}
-	
+
 	numberOfSubsets { arg m;
 		^PCS.numberOfSubsets(m, this.size);
 	}
-	
+
 	*numberOfPartitions { arg m, n = 12;
 		// nœmero campana.
 	}
-	
+
 	numberOfPartitions { arg m;
 		^PCS.numberOfPartitions(m, this.size);
 	}
-	
+
 	scIsSubsetOf { arg that;
 		//^that.pf.includesAll(this.pf) // no tiene sentido es lo mismo que subsetOf
 		var subSets = that.subsets(this.size);
@@ -382,7 +382,7 @@ PCS : OrderedIdentitySet {
 	//scUnion { }
 	//scDifference { }
 	//scSymmetricDifference { }
-	
+
 	pcsHash {
 		// modified Collection:hash
 		var hash = 0;
@@ -391,11 +391,12 @@ PCS : OrderedIdentitySet {
 		};
 		^hash
 	}
-	
+
 	// overwirte //
 	add { arg item; super.add(item mod: 12) }
-	
+
 	//addAll { }
 	//species { ^this.class }
 	//copy { ^this.deepCopy } // SUPERCLASS FIXED
 }
+
