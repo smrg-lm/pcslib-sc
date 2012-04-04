@@ -195,6 +195,7 @@ PCS : OrderedIdentitySet {
 	}
 
 	cardinal { ^this.size; }
+	ordinal { ^this.name.asString.split($-).at(1).asInteger; }
 	inversion { ^(12 - this.asArray mod: 12).as(PCS) }
 	transposition { arg n = 0; ^(this.asArray + n mod: 12).as(PCS) }
 	multiplication { arg n = 1; ^(this.asArray * n mod: 12).as(PCS) }
