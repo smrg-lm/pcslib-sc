@@ -24,6 +24,32 @@ PCS : OrderedIdentitySet {
 	m { arg n = 5; ^this.multiplication(n) }
 	mi { this.m.i } // shortcut, complete theory
 
+	status {
+		var pf, no, t;
+
+		pf = this.pf;
+		no = this.normalOrder;
+		t = no.asArray.first;
+
+		if(pf == no.t(t.neg), {
+			^[t, false];
+		}, {
+			no = this.i.normalOrder;
+			t = no.asArray.first;
+			^[t, true];
+		});
+	}
+
+	postStatus {
+		var st = this.status;
+
+		if(st.at(1), {
+			"T(%)I".format(st.at(0)).postln;
+		}, {
+			"T(%)".format(st.at(0)).postln;
+		});
+	}
+
 	complement {
 		^PCS('12-1').removeAll(this);
 	}
