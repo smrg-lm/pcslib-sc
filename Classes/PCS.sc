@@ -57,6 +57,7 @@ PCS : OrderedIdentitySet {
 	// Check if SC relationships needs to check i and t (in all abstract relationships)
 	scComplement {
 		var ret = PCS('12-1').removeAll(this.pf);
+
 		if(ret.notEmpty, {
 			^ret.pf;
 		}, {
