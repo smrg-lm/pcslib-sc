@@ -112,20 +112,6 @@ PCS : OrderedIdentitySet {
 		resInv = resInv - resInv.first % 12;
 
 		res = PCS.lexMin(res, resInv);
-
-		/*
-		if(res.size > 2 and: {
-				(res.at(1) - res.at(0))
-				>
-				(res.wrapAt(-1) - res.wrapAt(-2))
-			}, {
-			"paso".postln; // NO PASA NUNCA con PCS.lexMin(res, resInv)...
-			res = res.reverse; // retro
-			res = PCS.inversion(res); // inv
-			res = res - res.first % 12;
-		});
-		*/
-
 		^res.as(PCS);
 	}
 
