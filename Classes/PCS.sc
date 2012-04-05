@@ -1,18 +1,6 @@
 // pcslib-sc 2011
 // Pitch Class Set
 
-/*
-HACER:
-- kh
-- medidas de similitud
-
--- ver las divisiones de números negativos enteros y módulo, la implementación depende de esto.
-
-- hacer las permutaciones, o empelear el método de la clase array y ver en qué orden las genera (implementar con el método de la clase array si es que no realiza conversiones y reconversiones).
-- scSetOperations
-- agregar "status" (con respecto a la forma prima Tn I, ver pcs_2txt)
-*/
-
 PCS : OrderedIdentitySet {
 	*new { arg n = 2;
 		// [] calls new with an Integer, default n MUST be an integer.
@@ -34,14 +22,13 @@ PCS : OrderedIdentitySet {
 	i { ^this.inversion }
 	t { arg n = 0; ^this.transposition(n) }
 	m { arg n = 5; ^this.multiplication(n) }
-	mi { this.m.i } // shortcut, completa con la teoría
+	mi { this.m.i } // shortcut, complete theory
 
 	complement {
 		^PCS('12-1').removeAll(this);
 	}
 
-	// VER SI LAS RELACIONES SC NECESITAN CHECKEAR INVERSIONES Y TRANSPOSICIONES.
-	// sería en todas las relaciones abstractas.
+	// Check if SC relationships needs to check i and t (in all abstract relationships)
 	scComplement {
 		var ret = PCS('12-1').removeAll(this.pf);
 		if(ret.notEmpty, {
@@ -76,8 +63,8 @@ PCS : OrderedIdentitySet {
 				self = this.pf;
 				nexus = other.pf;
 				comp = other.scComplement;
-				// FIX, scIsSubsetOf vuelve a llamar las pf,
-				// self y nexus tal vez no sean necesarios.
+				// FIX, scIsSubsetOf calls pf again,
+				// self and nexus may be not necessary.
 				checkMethod = 'scIsSubsetOf';
 			}
 		);
@@ -118,10 +105,10 @@ PCS : OrderedIdentitySet {
 
 		if(this.isEmpty, { ^PCS[] });
 
-		res = this.normalOrder.asArray; // devuelve un pcs (mod 12) y lo convierte en arr.
+		res = this.normalOrder.asArray; // makes mod 12.
 		resInv = this.i.normalOrder.asArray;
 
-		res = res - res.first % 12; // mod es necesario cuando quedan números neg.
+		res = res - res.first % 12; // mod needed for negs.
 		resInv = resInv - resInv.first % 12;
 
 		res = PCS.lexMin(res, resInv);
@@ -290,7 +277,7 @@ PCS : OrderedIdentitySet {
 		^ret;
 	}
 
-	// private, por ahora
+	// private, by now
 	multiVarpart { arg arr;
 		var parts, diff, ret = [], subs = [];
 
@@ -363,7 +350,7 @@ PCS : OrderedIdentitySet {
 	}
 
 	*numberOfPartitions { arg m, n = 12;
-		// número campana.
+		// bell number
 	}
 
 	numberOfPartitions { arg m;
@@ -371,7 +358,7 @@ PCS : OrderedIdentitySet {
 	}
 
 	scIsSubsetOf { arg that;
-		//^that.pf.includesAll(this.pf) // no tiene sentido es lo mismo que subsetOf
+		//^that.pf.includesAll(this.pf) // has no sense is = to subsetOf
 		var subSets = that.subsets(this.size);
 		var thisPf = this.pf;
 		subSets.do({ arg pcs;
@@ -398,6 +385,6 @@ PCS : OrderedIdentitySet {
 
 	//addAll { }
 	//species { ^this.class }
-	//copy { ^this.deepCopy } // SUPERCLASS FIXED
+	//copy { ^this.deepCopy } // SUPERCLASS FIXED 3.5
 }
 
