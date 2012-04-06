@@ -436,6 +436,42 @@ PCS : OrderedIdentitySet {
 		^if(count >= 4, { true }, { false });
 	}
 
+	sim { arg that;
+		var icvA, icvB;
+		var maxsim, minsim, ret;
+
+		icvA = this.icv[1..];
+		icvB = that.icv[1..];
+		ret = 0;
+		maxsim = icvA.sum + icvB.sum;
+		minsim = icvA.sum absdif: icvB.sum;
+
+		6.do({ arg i;
+			ret = ret + (icvA.at(i) absdif: icvB.at(i));
+		});
+		^[ret, maxsim, minsim];
+	}
+
+	asim { arg that;
+		// ask morris mean
+	}
+
+	icvsim { arg that;
+		var icvA, icvB;
+		var idv, mean;
+		var ret;
+
+		icvA = this.icv[1..];
+		icvB = that.icv[1..];
+		idv = icvB - icvA;
+		mean = idv.sum / 6;
+		ret = 0;
+
+		6.do({ arg i; ret = ret + (idv.at(i) - mean).pow(2) });
+		ret = (ret / 6).sqrt;
+		^ret;
+	}
+
 	*numberOfSubsets { arg m, n = 12;
 		^(n.factorial / (m.factorial * (n - m).factorial))
 	}
