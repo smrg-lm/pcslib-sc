@@ -367,6 +367,75 @@ PCS : OrderedIdentitySet {
 		});
 	}
 
+	// relations
+	*prCheckEqualCardinality { arg a, b;
+		if(a.cardinal != b.cardinal, {
+			Error("PCS: must be of the same cardinality for comparison").throw;
+		});
+	}
+
+	rp { arg that;
+		var subA, subB;
+		var compcs = [], comsc = [];
+		var rp = false, strong = false;
+
+		PCS.prCheckEqualCardinality(this, that);
+		subA = this.subsets(this.cardinal - 1);
+		subB = that.subsets(that.cardinal - 1);
+
+		subA.do({ arg i;
+			subB.do({ arg j;
+				if(i == j, {
+					rp = true;
+					strong = true;
+					compcs = compcs.add(i);
+				}, {
+					if(i.pf == j.pf, {
+						rp = true;
+						comsc = comsc.add([i, j]);
+					});
+				})
+			});
+		});
+		^[rp, strong, compcs, comsc]
+	}
+
+	r0 { arg that;
+		var icvdif;
+
+		PCS.prCheckEqualCardinality(this, that);
+		icvdif = (this.icv - that.icv)[1..];
+
+		icvdif.do({ arg i; if(i == 0, { ^false }) });
+		^true;
+	}
+
+	r1 { arg that;
+		var icvdif, count = 0, inter = [];
+
+		PCS.prCheckEqualCardinality(this, that);
+		icvdif = (this.icv - that.icv)[1..];
+
+		icvdif.do({ arg i;
+			if(i == 0, {
+				count = count + 1;
+			}, {
+				inter = inter.add(i);
+			});
+		});
+		^if(count == 4 and: { inter.sum == 0 }, { true }, { false });
+	}
+
+	r2 { arg that;
+		var icvdif, count = 0;
+
+		PCS.prCheckEqualCardinality(this, that);
+		icvdif = (this.icv - that.icv)[1..];
+
+		icvdif.do({ arg i; if(i == 0, { count = count + 1 }) });
+		^if(count >= 4, { true }, { false });
+	}
+
 	*numberOfSubsets { arg m, n = 12;
 		^(n.factorial / (m.factorial * (n - m).factorial))
 	}
