@@ -286,7 +286,7 @@ PCS : OrderedIdentitySet {
 			^nil;
 		});
 
-		ret = this.multiVarpart([a, b]);
+		ret = this.varpart([a, b]);
 		if(variations.not, {
 			ret = ret.collectAs({ arg i; i.asSet }, Set); // ...fix
 			ret = ret.collectAs({ arg i; i.asArray }, Array); // ...fix
@@ -304,13 +304,13 @@ PCS : OrderedIdentitySet {
 	}
 
 	// private, by now
-	multiVarpart { arg arr;
+	varpart { arg arr;
 		var parts, diff, ret = [], subs = [];
 
 		if(arr.notEmpty, {
 			parts = this.subsets(arr.at(0));
 			parts.do({ arg part;
-				subs = multiVarpart(difference(this, part), arr[1..]);
+				subs = varpart(difference(this, part), arr[1..]);
 				if(subs.notEmpty, {
 					subs = subs.collect({ arg i;
 						([part] ++ [i]).flat;
