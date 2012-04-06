@@ -223,7 +223,7 @@ PCS : OrderedIdentitySet {
 		^PCS.prLexComb(nset, k, kcomb, last);
 	}
 
-	// all variations of k elements
+	// all variations of k elements, CHECK
 	variations { arg k = 2;
 		var nset = this.asArray.copy;
 		var n = nset.size;
@@ -278,12 +278,10 @@ PCS : OrderedIdentitySet {
 			b = (this.size/2).ceil;
 		});
 		if(this.size > 8, {
-			error("PCS: cardinal number > 8 are not supported for binpart");
-			^nil;
+			Error("PCS: cardinal number > 8 are not supported for binpart").throw;
 		});
 		if(a + b != this.size, {
-			error("PCS: binpart arguments sum must be equal to this.size");
-			^nil;
+			Error("PCS: binpart arguments sum must be equal to this.size").throw;
 		});
 
 		ret = this.varpart([a, b]);
@@ -328,8 +326,7 @@ PCS : OrderedIdentitySet {
 		var ret = Ref.new([]);
 		var arr = this.asArray;
 		if(arr.size > 8, {
-			error("PCSs of cardinal number > 8 are not supported for partitions");
-			^nil;
+			Error("PCS: pitch class sets of cardinal > 8 are not supported for partitions").throw;
 		});
 		PCS.prPartitions(arr, arr.at(0).asArray, 0, ret);
 		^ret.value;
@@ -368,9 +365,11 @@ PCS : OrderedIdentitySet {
 	}
 
 	// relations
-	*prCheckEqualCardinality { arg a, b;
+	*prCheckEqualCardinality { arg a, b, m;
 		if(a.cardinal != b.cardinal, {
-			Error("PCS: must be of the same cardinality for comparison").throw;
+			Error(
+				"PCS: pitch class sets must be of the same cardinality for % comparison".format(m)
+			).throw;
 		});
 	}
 
@@ -379,7 +378,7 @@ PCS : OrderedIdentitySet {
 		var compcs = [], comsc = [];
 		var rp = false, strong = false;
 
-		PCS.prCheckEqualCardinality(this, that);
+		PCS.prCheckEqualCardinality(this, that, "rp");
 		subA = this.subsets(this.cardinal - 1);
 		subB = that.subsets(that.cardinal - 1);
 
@@ -403,7 +402,7 @@ PCS : OrderedIdentitySet {
 	r0 { arg that;
 		var icvdif;
 
-		PCS.prCheckEqualCardinality(this, that);
+		PCS.prCheckEqualCardinality(this, that, "r0");
 		icvdif = (this.icv - that.icv)[1..];
 
 		icvdif.do({ arg i; if(i == 0, { ^false }) });
@@ -413,7 +412,7 @@ PCS : OrderedIdentitySet {
 	r1 { arg that;
 		var icvdif, count = 0, inter = [];
 
-		PCS.prCheckEqualCardinality(this, that);
+		PCS.prCheckEqualCardinality(this, that, "r1");
 		icvdif = (this.icv - that.icv)[1..];
 
 		icvdif.do({ arg i;
@@ -429,7 +428,7 @@ PCS : OrderedIdentitySet {
 	r2 { arg that;
 		var icvdif, count = 0;
 
-		PCS.prCheckEqualCardinality(this, that);
+		PCS.prCheckEqualCardinality(this, that, "r2");
 		icvdif = (this.icv - that.icv)[1..];
 
 		icvdif.do({ arg i; if(i == 0, { count = count + 1 }) });
