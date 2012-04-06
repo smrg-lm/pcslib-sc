@@ -271,8 +271,12 @@ PCS : OrderedIdentitySet {
 	}
 
 	binpart { arg a, b, variations = false;
-		var ret;
+		var ret, sortOp;
 
+		if(a.isNil or: { b.isNil }, {
+			a = (this.size/2).floor;
+			b = (this.size/2).ceil;
+		});
 		if(this.size > 8, {
 			error("PCS: cardinal number > 8 are not supported for binpart");
 			^nil;
@@ -287,6 +291,15 @@ PCS : OrderedIdentitySet {
 			ret = ret.collectAs({ arg i; i.asSet }, Set); // ...fix
 			ret = ret.collectAs({ arg i; i.asArray }, Array); // ...fix
 		});
+
+		// sort
+		if(a > b, { sortOp = '>' }, { sortOp = '<' });
+		ret = ret.collect({ arg i;
+			i.sort({ arg x, y;
+				x.size.perform(sortOp, y.size);
+			})
+		});
+
 		^ret;
 	}
 
