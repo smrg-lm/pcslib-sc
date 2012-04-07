@@ -441,18 +441,23 @@ PCS : OrderedIdentitySet {
 
 		icvA = this.icv[1..];
 		icvB = that.icv[1..];
-		ret = 0;
+		ret = icvA.absdif(icvB).sum;
 		maxsim = icvA.sum + icvB.sum;
 		minsim = icvA.sum absdif: icvB.sum;
 
-		6.do({ arg i;
-			ret = ret + (icvA.at(i) absdif: icvB.at(i));
-		});
 		^[ret, maxsim, minsim];
 	}
 
 	asim { arg that;
-		// ask morris mean
+		var icvA, icvB;
+		var res, nfac;
+
+		icvA = this.icv[1..];
+		icvB = that.icv[1..];
+		res = icvA.absdif(icvB).sum;
+		nfac = (icvA + icvB).sum;
+
+		^res/nfac;
 	}
 
 	icvsim { arg that;
@@ -464,10 +469,9 @@ PCS : OrderedIdentitySet {
 		icvB = that.icv[1..];
 		idv = icvB - icvA;
 		mean = idv.sum / 6;
-		ret = 0;
-
-		6.do({ arg i; ret = ret + (idv.at(i) - mean).pow(2) });
+		ret = (idv - mean).pow(2).sum;
 		ret = (ret / 6).sqrt;
+
 		^ret;
 	}
 
