@@ -27,6 +27,8 @@ PCS : OrderedIdentitySet {
 	status {
 		var pf, no, t;
 
+		if(this.isEmpty, { ^[0, false] });
+
 		pf = this.pf;
 		no = this.normalOrder;
 		t = no.asArray.first;
@@ -57,6 +59,8 @@ PCS : OrderedIdentitySet {
 		if(this.name != that.name, {
 			Error("PCSs must be of the same SC for relation").throw;
 		});
+
+		if(this.isEmpty, { ^[0, false] });
 
 		noA = this.normalOrder;
 		noB = that.normalOrder;
@@ -166,6 +170,8 @@ PCS : OrderedIdentitySet {
 	normalOrder {
 		var res, rotation, rotDiff, min = 12, auxMin = 12;
 
+		if(this.isEmpty, { ^PCS[] });
+
 		// 1
 		rotation = this.asArray.sort;
 
@@ -238,7 +244,7 @@ PCS : OrderedIdentitySet {
 		var last = Array.series(k, n - k);
 
 		if(nset.isEmpty or: { n < k }, {
-			^nil
+			^[]
 		});
 
 		^PCS.prLexComb(nset, k, kcomb, last);
@@ -252,7 +258,7 @@ PCS : OrderedIdentitySet {
 		var ret = [];
 
 		if(nset.isEmpty or: { n < k }, {
-			^nil
+			^[]
 		});
 
 		last = [0] ++ Array.series(k - 1, n - (k - 1));
