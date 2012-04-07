@@ -50,6 +50,27 @@ PCS : OrderedIdentitySet {
 		});
 	}
 
+	// returns [Tn, I] status in relation to other pcs of the same sc
+	relation { arg that;
+		var t, noA, noB;
+
+		if(this.name != that.name, {
+			Error("PCSs must be of the same SC for relation").throw;
+		});
+
+		noA = this.normalOrder;
+		noB = that.normalOrder;
+		t = noA.asArray.first - noB.asArray.first % 12;
+
+		if(noA == noB.t(t), {
+			^[t, false];
+		}, {
+			noB = that.i.normalOrder;
+			t = noA.asArray.first - noB.asArray.first % 12;
+			^[12 - t, true]; // pcs.t(n).i == pcs.i.t(12-n)
+		});
+	}
+
 	complement {
 		^PCS('12-1').removeAll(this);
 	}
