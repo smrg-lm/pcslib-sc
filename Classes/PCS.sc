@@ -62,14 +62,14 @@ PCS : OrderedIdentitySet {
 
 		if(this.isEmpty, { ^[0, false] });
 
-		noA = this.normalOrder;
-		noB = that.normalOrder;
+		noA = that.normalOrder;
+		noB = this.normalOrder;
 		t = noA.asArray.first - noB.asArray.first % 12;
 
 		if(noA == noB.t(t), {
 			^[t, false];
 		}, {
-			noB = that.i.normalOrder;
+			noB = this.i.normalOrder;
 			t = noA.asArray.first - noB.asArray.first % 12;
 			^[12 - t, true]; // pcs.t(n).i == pcs.i.t(12-n)
 		});
