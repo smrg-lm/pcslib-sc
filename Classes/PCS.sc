@@ -52,9 +52,9 @@ PCS : OrderedIdentitySet {
 		});
 	}
 
-	// returns [Tn, I] status in relation to other pcs of the same sc
-	relation { arg that;
-		var t, noA, noB;
+	// returns [[Tn, I], ...] status in relation to other pcs of the same sc
+	relations { arg that;
+		var ret = [];
 
 		if(this.name != that.name, {
 			Error("PCSs must be of the same SC for relation").throw;
@@ -62,17 +62,15 @@ PCS : OrderedIdentitySet {
 
 		if(this.isEmpty, { ^[0, false] });
 
-		noA = that.normalOrder;
-		noB = this.normalOrder;
-		t = noA.asArray.first - noB.asArray.first % 12;
-
-		if(noA == noB.t(t), {
-			^[t, false];
-		}, {
-			noB = this.i.normalOrder;
-			t = noA.asArray.first - noB.asArray.first % 12;
-			^[12 - t, true]; // pcs.t(n).i == pcs.i.t(12-n)
+		12.do({ arg i;
+			if(this.t(i) == that, {
+				ret = ret.add([i, false]);
+			});
+			if(this.t(i).i == that, {
+				ret = ret.add([i, true]);
+			});
 		});
+		^ret;
 	}
 
 	complement {
