@@ -299,28 +299,33 @@ PCS : OrderedIdentitySet {
 		^ret;
 	}
 
-	binpart { arg a, b, variations = false;
-		var ret, sortOp;
+	// CHECK variations
+	binpart { arg ab, variations = false;
+		var ret, sortOp, ite;
 
-		if(a.isNil or: { b.isNil }, {
-			a = (this.size/2).floor;
-			b = (this.size/2).ceil;
-		});
 		if(this.size > 8, {
 			Error("PCS: cardinal number > 8 are not supported for binpart").throw;
 		});
-		if(a + b != this.size, {
-			Error("PCS: binpart arguments sum must be equal to this.size").throw;
+		if(ab.notNil, {
+			if(ab.sum != this.size, {
+				Error("PCS: binpart ab arg sum must be equal to size").throw;
+			});
+
+			ret = this.varpart([ab.at(0), ab.at(1)]);
+			if(ab.at(0) > ab.at(1), { sortOp = '>' }, { sortOp = '<' });
+		}, {
+			ite = (1..(this.size.div(2)));
+			ret = ite.collect({ arg i;
+				this.varpart([i, this.size - i]);
+			}).flatten;
+			sortOp = '<';
 		});
 
-		ret = this.varpart([a, b]);
 		if(variations.not, {
 			ret = ret.collectAs({ arg i; i.asSet }, Set); // ...fix
 			ret = ret.collectAs({ arg i; i.asArray }, Array); // ...fix
+			// and doesn't gives the same order in different excecutions
 		});
-
-		// sort
-		if(a > b, { sortOp = '>' }, { sortOp = '<' });
 		ret = ret.collect({ arg i;
 			i.sort({ arg x, y;
 				x.size.perform(sortOp, y.size);
@@ -330,7 +335,7 @@ PCS : OrderedIdentitySet {
 		^ret;
 	}
 
-	// private, by now
+	// private, by now CHECK arr numbers
 	varpart { arg arr;
 		var parts, diff, ret = [], subs = [];
 
@@ -504,20 +509,56 @@ PCS : OrderedIdentitySet {
 		^ret;
 	}
 
-	*numberOfSubsets { arg m, n = 12;
-		^(n.factorial / (m.factorial * (n - m).factorial))
+	*numberOfSubsets { arg k, n = 12;
+		^n.factorial / (k.factorial * (n - k).factorial)
 	}
 
-	numberOfSubsets { arg m;
-		^PCS.numberOfSubsets(m, this.size);
+	numberOfSubsets { arg k;
+		^PCS.numberOfSubsets(k, this.size);
 	}
 
-	*numberOfPartitions { arg m, n = 12;
-		// bell number
+	*numberOfPermutations { arg n = 12;
+		^n.factorial;
 	}
 
-	numberOfPartitions { arg m;
-		^PCS.numberOfPartitions(m, this.size);
+	numberOfPermutations {
+		^PCS.numberOfPermutations(this.size);
+	}
+
+	*numberOfVariations { arg k, n = 12;
+		^n.factorial / (n - k).factorial;
+	}
+
+	numberOfVariations { arg k;
+		^PCS.numberOfVariations(k, this.size);
+	}
+
+	// number of partitions
+	// there is a special algorithm
+	*bellNumber { arg n = 12;
+		var ret = 0;
+		(0..n).do({ arg k;
+			ret = ret + PCS.stirlingNumber(k, n);
+		});
+		^ret;
+	}
+
+	bellNumber {
+		^PCS.bellNumber(this.size);
+	}
+
+	// for number of binary, etc. partitions
+	*stirlingNumber { arg k, n = 12;
+		var ret = 0;
+		(0..k).do({ arg j;
+			ret = ret  + (-1.pow(j-k) * (j.pow(n-1) /
+			((j - 1).factorial * (k - j).factorial)));
+		});
+		^ret;
+	}
+
+	stirlingNumber { arg k;
+		^PCS.stirlingNumber(k, this.size);
 	}
 
 	scIsSubsetOf { arg that;

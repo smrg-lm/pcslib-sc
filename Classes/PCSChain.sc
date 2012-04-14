@@ -25,23 +25,11 @@ PCSChain : List {
 		});
 	}
 
-	binparts {
-		var ret, ite;
-
-		ite = (1..(this.norm.size.div(2)));
-		ret = ite.collect({ arg i;
-			// no garantiza el mismo orden por la conversión interna a set.
-			this.norm.binpart(i, this.norm.size - i);
-		}).flatten;
-
-		^ret;
-	}
-
 	candidates { arg postList = true;
 		var pcs, normName, subsets;
 
 		if(this.isEmpty, {
-			candList = this.binparts;
+			candList = norm.binpart;
 		}, {
 			candList = [];
 			normName = this.norm.name;
