@@ -248,6 +248,10 @@ PCS : OrderedIdentitySet {
 		^PCS.prLexComb(nset, k, kcomb, last);
 	}
 
+	permute { arg nthPermutation;
+		^this.asArray.permute(nthPermutation).as(PCS);
+	}
+
 	// all variations of k elements, CHECK
 	variations { arg k = 2;
 		var nset = this.asArray.copy;
