@@ -252,9 +252,11 @@ PCS : OrderedIdentitySet {
 		^this.asArray.permute(nthPermutation).as(PCS);
 	}
 
-	// all variations of k elements, CHECK
-	variations { arg k = 2;
-		var nset = this.asArray.copy;
+	// permutations of subsets of k elements
+	// is better to calculate the subsets and choose a permutation
+	// removable method
+	vary { arg k = 2, nthPermutation = 0;
+		var nset = this.asArray;
 		var n = nset.size;
 		var kcomb, last;
 		var ret = [];
@@ -264,11 +266,9 @@ PCS : OrderedIdentitySet {
 		});
 
 		last = [0] ++ Array.series(k - 1, n - (k - 1));
-		n.do({
-			kcomb = Array.series(k);
-			ret = ret ++ PCS.prLexComb(nset, k, kcomb, last);
-			nset = nset.rotate(-1);
-		});
+		kcomb = Array.series(k);
+		ret = PCS.prLexComb(nset, k, kcomb, last);
+		ret = ret.collect({ arg i; i.permute(nthPermutation) });
 
 		^ret;
 	}
