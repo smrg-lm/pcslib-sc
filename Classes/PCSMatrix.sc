@@ -22,8 +22,8 @@ PCSMatrix {
 		^super.new.initMatrix(hnorm, vnorm, \t2);
 	}
 
-	*diagonal { arg norm;
-		^super.new.initMatrix(norm, nil, \diagonal);
+	*fromChain { arg pcsChain, normParts = 2;
+		^super.new.initMatrix(pcsChain.asArray.clump(normParts), nil, \chain);
 	}
 
 	initMatrix { arg hn, vn, t;
@@ -69,12 +69,12 @@ PCSMatrix {
 					});
 				});
 			},
-			\diagonal, {
-				if(hn.at(0).class == PCS, { hn = hn.clump(1) });
-				hnorm = vnorm = hn;
-				matrix = hnorm.collect({ arg i, j;
-					(i ++ PCS[].dup(hnorm.size - i.size)).rotate(j);
+			\chain, {
+				matrix = hn.collect({ arg i, j;
+					(i ++ PCS[].dup(hn.size - i.size)).rotate(j);
 				});
+				hnorm = hn.at(0);
+				vnorm = matrix.flop.at(0).reject(_.isEmpty);
 			}
 		);
 	}
