@@ -70,6 +70,7 @@ PCSMatrix {
 				});
 			},
 			\diagonal, {
+				if(hn.at(0).class == PCS, { hn = hn.clump(1) });
 				hnorm = vnorm = hn;
 				matrix = hnorm.collect({ arg i, j;
 					(i ++ PCS[].dup(hnorm.size - i.size)).rotate(j);
