@@ -22,6 +22,10 @@ PCSMatrix {
 		^super.new.initMatrix(hnorm, vnorm, \t2);
 	}
 
+	*diagonal { arg norm;
+		^super.new.initMatrix(norm, nil, \diagonal);
+	}
+
 	initMatrix { arg hn, vn, t;
 		matrix = [];
 		type = t;
@@ -63,6 +67,12 @@ PCSMatrix {
 					hnorm.collect({ arg j;
 						(j.asArray + i.asArray).as(PCS);
 					});
+				});
+			},
+			\diagonal, {
+				hnorm = vnorm = hn;
+				matrix = hnorm.collect({ arg i, j;
+					(i ++ PCS[].dup(hnorm.size - i.size)).rotate(j);
 				});
 			}
 		);
