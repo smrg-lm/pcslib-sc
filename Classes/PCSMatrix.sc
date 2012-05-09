@@ -26,6 +26,10 @@ PCSMatrix {
 		^super.new.initMatrix(pcsChain.asArray.clump(normParts), nil, \chain);
 	}
 
+	*opcy { arg norm, op;
+		^super.new.initOpcyMatrix(norm, op, \opcy);
+	}
+
 	initMatrix { arg hn, vn, t;
 		matrix = [];
 		type = t;
@@ -77,6 +81,50 @@ PCSMatrix {
 				vnorm = matrix.flop.at(0).reject(_.isEmpty);
 			}
 		);
+	}
+
+	initOpcyMatrix { arg norm, op, t;
+		var transp, size;
+
+		switch(op.asSymbol,
+			'T2/A', {
+				transp = 2;
+				size = 6;
+			},
+			'T3/9', {
+				transp = 3;
+				size = 4;
+			},
+			'T4/8', {
+				transp = 4;
+				size = 3;
+			},
+			'T6/TI', {
+				transp = 6;
+				size = 2;
+			},
+			{ Error("PCSMatrix invalid op").throw; }
+		);
+
+		matrix = [];
+		type = (t ++ " " ++ op).asSymbol;
+		hnorm = vnorm = norm;
+
+		if(norm.class == PCS, {
+			matrix = size.collect({ arg i;
+				var ret;
+				ret = ([norm] ++ PCS[].dup(size - 1)).rotate(i);
+				norm = norm.t(transp);
+				ret;
+			});
+		}, {
+			matrix = size.collect({ arg i;
+				var ret;
+				ret = (norm ++ PCS[].dup(size - norm.size)).rotate(i);
+				norm = norm.collect(_.t(transp));
+				ret;
+			});
+		});
 	}
 
 	/* from Matrix
