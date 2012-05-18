@@ -6,6 +6,18 @@ PCSMatrix {
 	var <matrix;
 	var <vnorm, <hnorm;
 
+	*newFromArray { arg arr, type;
+		^this.new.prCopyFromArray(arr, type);
+	}
+
+	prCopyFromArray { arg arr, t;
+		// check si los nodos son pcs
+		matrix = arr.deepCopy;
+		hnorm = arr.at(0).deepCopy;
+		vnorm = arr.flop.at(0).deepCopy;
+		type = t;
+	}
+
 	*roman { arg norm;
 		^super.new.initMatrix(norm, nil, \roman);
 	}
@@ -125,6 +137,78 @@ PCSMatrix {
 				ret;
 			});
 		});
+	}
+
+	performOnMatrix { arg op ...args;
+		var arr = matrix.collect({ arg row;
+			row.collect(_.perform(op, *args));
+		});
+		^PCSMatrix.newFromArray(arr, this.type);
+	}
+
+	// cm_trans
+	i { ^this.performOnMatrix(\i); }
+	t { arg n = 0; ^this.performOnMatrix(\t, n); }
+	m { arg n = 5; ^this.performOnMatrix(\m, n); }
+
+	r90 { arg clockwise = false;
+		var arr = Array.fill2D(matrix.at(0).size, matrix.size);
+
+		if(clockwise, {
+			matrix.reverseDo({ arg row, i;
+				row.do({ arg pcs, j;
+					arr[j][i] = pcs.copy;
+				});
+			});
+			^PCSMatrix.newFromArray(arr, this.type);
+		}, {
+			matrix.do({ arg row, i;
+				row.reverseDo({ arg pcs, j;
+					arr[j][i] = pcs.copy;
+				});
+			});
+			^PCSMatrix.newFromArray(arr, this.type);
+		});
+	}
+
+	rD {
+		// ver qué es, tal vez es invX comb invY?
+	}
+
+	invX {
+		var arr = matrix.reverse;
+		^PCSMatrix.newFromArray(arr, this.type);
+	}
+
+	invY {
+		var arr = matrix.collect({ arg row;
+			row.reverse;
+		});
+		^PCSMatrix.newFromArray(arr, this.type);
+	}
+
+	eRow { arg r1, r2;
+	}
+
+	eCol { arg c1, c2;
+		// hay que recorrer la matriz
+		// usar r90 sería recorrela dos veces + el intercamio.
+	}
+
+	// swap
+	// cm
+
+	// cm_2pcs
+	pcsAtPos { arg x, y;
+	}
+
+	pcsAtRow { arg n;
+	}
+
+	pcsAtCol { arg n;
+	}
+
+	pcsAtAll {
 	}
 
 	/* from Matrix
