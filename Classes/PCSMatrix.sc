@@ -188,11 +188,23 @@ PCSMatrix {
 	}
 
 	eRow { arg r1, r2;
+		var arr = matrix.deepCopy; // FIXME: copy, copy...
+		var aux = arr[r1];
+		arr[r1] = arr[r2];
+		arr[r2] = aux;
+		^PCSMatrix.newFromArray(arr, this.type);
 	}
 
 	eCol { arg c1, c2;
-		// hay que recorrer la matriz
-		// usar r90 sería recorrela dos veces + el intercamio.
+		var arr = matrix.deepCopy; // FIXME: copy, copy...
+		var aux;
+		arr = arr.collect({ arg i;
+			aux = i[c1];
+			i[c1] = i[c2];
+			i[c2] = aux;
+			i;
+		});
+		^PCSMatrix.newFromArray(arr, this.type);
 	}
 
 	// swap
@@ -200,15 +212,25 @@ PCSMatrix {
 
 	// cm_2pcs
 	pcsAtPos { arg x, y;
+		^this.matrix[x][y];
 	}
 
 	pcsAtRow { arg n;
+		var ret = PCS[];
+		this.matrix[n].do({ arg i; ret = ret union: i });
+		^ret;
 	}
 
 	pcsAtCol { arg n;
+		var ret = PCS[];
+		this.matrix.do({ arg i; ret = ret union: i[n] });
+		^ret;
 	}
 
 	pcsAtAll {
+		var ret = PCS[];
+		this.matrix.flat.do({ arg i; ret = ret union: i });
+		^ret;
 	}
 
 	/* from Matrix
