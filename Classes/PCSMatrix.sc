@@ -6,44 +6,53 @@ PCSMatrix {
 	var <matrix;
 	var <vnorm, <hnorm;
 
-	*newFromArray { arg arr, type;
-		^this.new.prCopyFromArray(arr, type);
+	*fromArray { arg arr, type = \fromArray;
+		^this.new.initMatrixFromArray(arr, type);
 	}
 
-	prCopyFromArray { arg arr, t;
-		// check si los nodos son pcs
-		matrix = arr.deepCopy;
-		hnorm = arr.at(0).deepCopy;
-		vnorm = arr.flop.at(0).deepCopy;
+	initMatrixFromArray { arg arr, t;
+		matrix = arr.collect({ arg i;
+			i.collect({ arg j;
+				j.asArray.as(PCS);
+			})
+		});
+		hnorm = matrix.at(0);
+		vnorm = matrix.flop.at(0);
 		type = t;
 	}
 
 	*roman { arg norm;
-		^super.new.initMatrix(norm, nil, \roman);
+		^super.new.initRomanMatrix(norm);
+	}
+
+	initRomanMatrix { arg hn;
+		type = \roman;
+
+		if(hn.class == PCS, {
+			hn = hn.asArray.clump(1).collect({ arg i; i.as(PCS) });
+		});
+
+		hnorm = vnorm = hn;
+		matrix = hnorm.size.collect({ arg i;
+			hnorm.rotate(i.neg);
+		});
 	}
 
 	*t1a { arg norm;
-		^super.new.initMatrix(norm, nil, \t1a);
+		^super.new.initTypeMatrix(norm, nil, \t1a);
 	}
 
 	*t1b { arg norm;
-		^super.new.initMatrix(norm, nil, \t1b);
+		^super.new.initTypeMatrix(norm, nil, \t1b);
 	}
 
 	*t2 { arg hnorm, vnorm;
-		^super.new.initMatrix(hnorm, vnorm, \t2);
+		^super.new.initTypeMatrix(hnorm, vnorm, \t2);
 	}
 
-	*fromChain { arg pcsChain, normParts = 2;
-		^super.new.initMatrix(pcsChain.asArray.clump(normParts), nil, \chain);
-	}
+	initTypeMatrix { arg hn, vn, t;
+		var auxOp = \copy; // self
 
-	*opcy { arg norm, op;
-		^super.new.initOpcyMatrix(norm, op, \opcy);
-	}
-
-	initMatrix { arg hn, vn, t;
-		matrix = [];
 		type = t;
 
 		if(hn.class == PCS, {
@@ -53,46 +62,33 @@ PCSMatrix {
 			vn = vn.asArray.clump(1).collect({ arg i; i.as(PCS) });
 		});
 
-		switch(type,
-			\roman, {
-				hnorm = vnorm = hn;
-				matrix = hnorm.size.collect({ arg i;
-					hnorm.rotate(i.neg);
-				});
-			},
-			\t1a, {
-				hnorm = vnorm = hn;
-				matrix = hnorm.collect({ arg i;
-					hnorm.collect({ arg j;
-						(j.asArray + i.asArray).as(PCS);
-					});
-				});
-			},
-			\t1b, {
-				hnorm = vnorm = hn;
-				matrix = hnorm.collect({ arg i;
-					hnorm.collect({ arg j;
-						(j.asArray + i.i.asArray).as(PCS);
-					});
-				});
-			},
-			\t2, {
-				hnorm = hn;
-				vnorm = vn ? hn;
-				matrix = vnorm.collect({ arg i;
-					hnorm.collect({ arg j;
-						(j.asArray + i.asArray).as(PCS);
-					});
-				});
-			},
-			\chain, {
-				matrix = hn.collect({ arg i, j;
-					(i ++ PCS[].dup(hn.size - i.size)).rotate(j);
-				});
-				hnorm = hn.at(0);
-				vnorm = matrix.flop.at(0).reject(_.isEmpty);
-			}
-		);
+		hnorm = hn;
+		vnorm = vn ? hn;
+		if(type == \t1b, { auxOp = \i });
+
+		matrix = vnorm.collect({ arg i;
+			hnorm.collect({ arg j;
+				(j.asArray + i.perform(auxOp).asArray).as(PCS);
+			});
+		});
+	}
+
+	*fromChain { arg pcsChain, normParts = 2;
+		^super.new.initMatrix(pcsChain.asArray.clump(normParts));
+	}
+
+	initChainMatrix { arg hn;
+		type = \chain;
+
+		matrix = hn.collect({ arg i, j;
+			(i ++ PCS[].dup(hn.size - i.size)).rotate(j);
+		});
+		hnorm = hn.at(0);
+		vnorm = matrix.flop.at(0).reject(_.isEmpty);
+	}
+
+	*opcy { arg norm, op;
+		^super.new.initOpcyMatrix(norm, op, \opcy);
 	}
 
 	initOpcyMatrix { arg norm, op, t;
@@ -139,14 +135,14 @@ PCSMatrix {
 		});
 	}
 
+	// cm_trans
 	performOnMatrix { arg op ...args;
 		var arr = matrix.collect({ arg row;
 			row.collect(_.perform(op, *args));
 		});
-		^PCSMatrix.newFromArray(arr, this.type);
+		^PCSMatrix.fromArray(arr, this.type);
 	}
 
-	// cm_trans
 	i { ^this.performOnMatrix(\i); }
 	t { arg n = 0; ^this.performOnMatrix(\t, n); }
 	m { arg n = 5; ^this.performOnMatrix(\m, n); }
@@ -160,14 +156,14 @@ PCSMatrix {
 					arr[j][i] = pcs.copy;
 				});
 			});
-			^PCSMatrix.newFromArray(arr, this.type);
+			^PCSMatrix.fromArray(arr, this.type);
 		}, {
 			matrix.do({ arg row, i;
 				row.reverseDo({ arg pcs, j;
 					arr[j][i] = pcs.copy;
 				});
 			});
-			^PCSMatrix.newFromArray(arr, this.type);
+			^PCSMatrix.fromArray(arr, this.type);
 		});
 	}
 
@@ -177,14 +173,14 @@ PCSMatrix {
 
 	invX {
 		var arr = matrix.reverse;
-		^PCSMatrix.newFromArray(arr, this.type);
+		^PCSMatrix.fromArray(arr, this.type);
 	}
 
 	invY {
 		var arr = matrix.collect({ arg row;
 			row.reverse;
 		});
-		^PCSMatrix.newFromArray(arr, this.type);
+		^PCSMatrix.fromArray(arr, this.type);
 	}
 
 	eRow { arg r1, r2;
@@ -192,7 +188,7 @@ PCSMatrix {
 		var aux = arr[r1];
 		arr[r1] = arr[r2];
 		arr[r2] = aux;
-		^PCSMatrix.newFromArray(arr, this.type);
+		^PCSMatrix.fromArray(arr, this.type);
 	}
 
 	eCol { arg c1, c2;
@@ -204,11 +200,23 @@ PCSMatrix {
 			i[c2] = aux;
 			i;
 		});
-		^PCSMatrix.newFromArray(arr, this.type);
+		^PCSMatrix.fromArray(arr, this.type);
 	}
 
-	// swap
-	// cm
+	//swap
+
+	// cm_ana
+	//frag
+	//spar
+	hist {
+		var pfa = Array.fill(12, 0);
+		matrix.do({ arg row;
+			row.do({ arg pcs;
+				pcs.do({ arg i; pfa[i] = pfa[i] + 1 });
+			});
+		});
+		^pfa;
+	}
 
 	// cm_2pcs
 	pcsAtPos { arg x, y;
