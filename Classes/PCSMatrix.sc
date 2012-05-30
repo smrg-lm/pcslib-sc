@@ -74,7 +74,7 @@ PCSMatrix {
 	}
 
 	*fromChain { arg pcsChain, normParts = 2;
-		^super.new.initMatrix(pcsChain.asArray.clump(normParts));
+		^super.new.initChainMatrix(pcsChain.asArray.clump(normParts));
 	}
 
 	initChainMatrix { arg hn;
