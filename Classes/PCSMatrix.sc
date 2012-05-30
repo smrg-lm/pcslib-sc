@@ -241,20 +241,101 @@ PCSMatrix {
 		^ret;
 	}
 
-	/* from Matrix
 	printOn { arg stream;
+		var maxColSize, strSize;
+
+		// format may be removed
+		maxColSize = [];
+		matrix.at(0).size.do({ arg i;
+			maxColSize = maxColSize.add(0);
+			matrix.slice(nil, i).do({ arg obj;
+				strSize = obj.asString.size;
+				if(strSize > maxColSize[i], {
+					maxColSize[i] = strSize;
+				});
+			});
+		});
+
 		if (stream.atLimit) { ^this };
-		stream << this.class.name << "[ " ;
+		stream << this.class.name << "[" ;
 		matrix.do({ arg row, i;
-			if (stream.atLimit) { ^this };
-			if (i != 0, { stream.comma; });
+			if(stream.atLimit, { ^this });
+			if(i != 0, { stream.comma });
 			stream << "\n";
-			stream.tab;
-			row.printOn(stream);
+			stream.space;
+			stream << "[ ";
+			row.do({ arg obj, j;
+				if(stream.atLimit) { ^this };
+				obj = obj.asString;
+				if(j < (row.size - 1), {
+					obj = obj ++ ", ";
+					obj = obj.padRight(maxColSize[j] + 2);
+				}, {
+					obj = obj.padRight(maxColSize[j]);
+				});
+				obj.printOn(stream);
+			});
+			stream << " ]";
 		});
 		stream << "\n";
-		stream << " ]" ;
+		stream << "]" ;
 	}
-	*/
+
+	asciiPlot { arg stream, lines = true;
+		var maxColSize, strSize;
+		var strMatrix;
+		var hline;
+
+		stream = stream ? Post;
+		maxColSize = [];
+		strMatrix = [];
+
+		matrix.at(0).size.do({ arg i;
+			maxColSize = maxColSize.add(0);
+			strMatrix = strMatrix.add([]);
+			matrix.slice(nil, i).do({ arg obj;
+				obj = obj
+					.asArray
+					.replace(10, "A")
+					.replace(11, "B")
+					.join;
+				strSize = obj.size;
+				if(strSize > maxColSize[i], {
+					maxColSize[i] = strSize;
+				});
+				strMatrix[i] = strMatrix[i].add(obj);
+			});
+		});
+
+		if(lines, {
+			hline = "+";
+			maxColSize.do({ arg n;
+				hline = hline ++  "".padRight(n + 2, "-") ++ "+";
+			});
+
+			stream << hline;
+			stream << "\n";
+			strMatrix.flop.do({ arg row, i;
+				stream << "|";
+				row.do({ arg str, j;
+					str = str.padRight(maxColSize[j]);
+					str = " " ++ str ++ " |";
+					str.printOn(stream);
+				});
+				stream << "\n";
+				stream << hline;
+				stream << "\n";
+			});
+		}, {
+			strMatrix.flop.do({ arg row, i;
+				row.do({ arg str, j;
+					if(str.isEmpty, { str = "." });
+					str = str.padRight(maxColSize[j] + 1);
+					str.printOn(stream);
+				});
+				stream << "\n";
+			});
+		});
+	}
 }
 
