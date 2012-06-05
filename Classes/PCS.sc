@@ -22,7 +22,7 @@ PCS : OrderedIdentitySet {
 	i { ^this.inversion }
 	t { arg n = 0; ^this.transposition(n) }
 	m { arg n = 5; ^this.multiplication(n) }
-	mi { this.m.i } // shortcut, complete theory
+	mi { ^this.multiplication(7) }
 
 	status {
 		var pf, no, t;
