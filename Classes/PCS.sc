@@ -158,7 +158,7 @@ PCS : OrderedIdentitySet {
 		res = this.normalOrder.asArray; // makes mod 12.
 		resInv = this.i.normalOrder.asArray;
 
-		res = res - res.first % 12; // mod needed for negs.
+		res = res - res.first % 12; // mod needed for negs, compiler dependent!
 		resInv = resInv - resInv.first % 12;
 
 		res = PCS.lexMin(res, resInv);
