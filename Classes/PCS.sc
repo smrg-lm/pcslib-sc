@@ -128,8 +128,8 @@ PCS : OrderedIdentitySet {
 		#self, nexus, comp, checkMethod = prKKHSetup(this, other, type);
 		if(prKKHPreconditions(this, nexus, comp).not, { ^false });
 
-		if( (self.perform(checkMethod, nexus) or: { self.perform(checkMethod, comp) })
-			or: (nexus.perform(checkMethod, self) or: { comp.perform(checkMethod, self) }), {
+		if( (self.perform(checkMethod, nexus) or: { nexus.perform(checkMethod, self) })
+			or: (self.perform(checkMethod, comp) or: { comp.perform(checkMethod, self) }), {
 			^true
 		}, {
 			^false
