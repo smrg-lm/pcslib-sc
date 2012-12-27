@@ -7,6 +7,9 @@ PCS : OrderedIdentitySet {
 		if(n.isInteger, {
 			^super.new(n);
 		}, {
+			if(n.class === Array and: { n.class !== String }) {
+				^n.as(PCS);
+			};
 			^super.newFrom(SCTable.pfOf(n));
 		});
 	}
