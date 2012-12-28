@@ -1,0 +1,544 @@
+TITLE:: PCS
+summary:: Pitch-Class Set representation
+categories:: Classes
+related:: Classes/SCTable, Classes/PCSChain, Classes/PCSMatrix
+
+DESCRIPTION::
+This class represents a Pitch-Class Set (PCS) as stated in Forte 1974. It provides common operations and information about PCSs.
+
+
+CLASSMETHODS::
+
+
+METHOD:: new
+Creates a new link::Classes/PCS::.
+
+ARGUMENT:: n
+Can be an link::Classes/Array:: specifing PCs/MIDI-notes or a symbolic name (link::Classes/Symbol:: or link::Classes/String::) specifing a link::Classes/PCS:: Forte name.
+
+returns::
+A new link::Classes/PCS::. If a symbolic name is supplied but dosn't exist it will return an empty link::Classes/PCS::. The retuned PCS is in prime form except when an array is supplied.
+code::
+PCS.new(PCS[1, 2, 3]); // pf
+PCS.new('3-1'); // pf
+PCS.new("3-1"); // pf
+PCS.new([1, 2, 2, 63]); // no pf
+PCS[1, 2, 2, 63]; // no pf
+PCS.new("8-51"); // empty
+::
+
+NOTE::
+It is allowed to use the array like creation shortcut e.g. code::PCS[1, 2, 3]::.
+::
+
+
+METHOD:: transposition
+Transpose an link::Classes/Array:: of link::Classes/Integer::s as a link::Classes/PCS::. Keeps PC repetitions.
+code::
+PCS.transposition([3, 8, 11, 60, 63], 1);
+::
+
+METHOD:: inversion
+Invert an link::Classes/Array:: of link::Classes/Integer::s as a link::Classes/PCS::. Keeps PC repetitions.
+code::
+PCS.inversion([3, 8, 11, 60, 63]);
+::
+
+METHOD:: multiplication
+Multiply an link::Classes/Array:: of link::Classes/Integer::s as a link::Classes/PCS::. Keeps PC repetitions.
+code::
+PCS.multiplication([3, 8, 11, 60, 63], 5);
+::
+
+
+SUBSECTION:: Useful Numbers for Pre-Calculation
+
+METHOD:: numberOfPermutations
+(describe method here)
+
+ARGUMENT:: n
+(describe argument here)
+
+returns::
+An link::Classes/Integer::.
+
+METHOD:: stirlingNumber
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+ARGUMENT:: n
+(describe argument here)
+
+returns::
+An link::Classes/Integer::.
+
+METHOD:: numberOfVariations
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+ARGUMENT:: n
+(describe argument here)
+
+returns::
+An link::Classes/Integer::.
+
+METHOD:: numberOfSubsets
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+ARGUMENT:: n
+(describe argument here)
+
+returns::
+An link::Classes/Integer::.
+
+METHOD:: bellNumber
+(describe method here)
+
+ARGUMENT:: n
+(describe argument here)
+
+returns::
+An link::Classes/Integer::.
+
+
+SUBSECTION:: Private Class Methods
+
+METHOD:: prLexComb
+METHOD:: prPartitions
+METHOD:: lexMin
+METHOD:: prCheckEqualCardinality
+
+
+INSTANCEMETHODS::
+
+
+SUBSECTION:: TTO
+
+TTO stands for Twelve-Tone Operators, Morris (1984). There are four TTOs: code::t::, code::t.i:: code::t.m:: and code::t.m.i::, these operations are separated as different methods for flexibility.
+
+NOTE::
+It is recomended to use the shortcut methods as they are clearest for the PCS theory and practice.
+::
+
+METHOD:: transposition
+Trasnposition of a PCS emphasis::A:: by emphasis::n:: chromatic degrees.
+t(n)A == A + n%12
+ARGUMENT:: n
+link::Classes/Integer:: number of chromatic degrees to transpose, can be negative.
+returns::
+A new transposed PCS.
+
+METHOD:: t
+Shortcut for link::#transposition::.
+ARGUMENT:: n
+An link::Classes/Integer:: number of chromatic degrees, can be negative.
+returns::
+A new transposed PCS.
+
+
+METHOD:: inversion
+Inversion of a PCS.
+iA = (12 - A) mod: 12
+returns::
+A new inverted PCS.
+
+METHOD:: i
+Shortcut for link::#iversion::.
+returns::
+A new inverted PCS.
+
+METHOD:: multiplication
+Multiply a PCS by a factor emphasis::n::.
+nA = nA mod: 12
+ARGUMENT:: n
+Factor, default to 1.
+returns::
+A new multiplied PCS.
+
+METHOD:: m
+Shortcut for link::#multiplication::.
+ARGUMENT:: n
+Factor, default to 5 by convention.
+returns::
+A new multiplied PCS.
+
+METHOD:: mi
+Multiplication and inversion, convenience method.
+mA = 7A mod: 12
+
+code::
+p = PCS[9, 7, 8, 6];
+p.name;
+p.t(3); // transpose to the upper minor third
+p.i; // inversion
+r = p.m; // multiplication by 5 (m and mi operators *may* change the SC)
+r.name;
+r = p.mi; // multiplication by 7
+r.name;
+::
+
+
+
+
+
+
+
+
+
+METHOD:: z
+Returns the ordinal number of the SC that is in Z relation with this link::Classes/PCS::. If doesn't exist returns code::nil::.
+NOTE::
+Two PCSs are in Z relation when they belong to a different SC but have the same link::#icv::, Forte 1987.
+::
+code::
+p = PCS[0, 1, 4, 6];
+p.z; // 29
+q = PCS('4-29');
+p.icv == q.icv; // true
+
+p = PCS[0, 1, 2, 3];
+p.z; // nil
+::
+returns:: An link::Classes/Integer:: or code::nil::.
+
+
+
+METHOD:: stirlingNumber
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: numberOfSubsets
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: numberOfVariations
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: bellNumber
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: numberOfPermutations
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+
+METHOD:: varpart
+(describe method here)
+
+ARGUMENT:: arr
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: vary
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+ARGUMENT:: nthPermutation
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: powerset
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: binpart
+(describe method here)
+
+ARGUMENT:: ab
+(describe argument here)
+
+ARGUMENT:: variations
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+
+METHOD:: status
+Returns an link::Classes/Array:: of two elements, the first is an link::Classes/Integer:: as the transposition factor and the second is the inversion indication (as a link::Classes/Boolean::) of the link::Classes/PCS:: in relation to its emphasis::prime form::.
+code::
+p = PCS[8, 7, 0];
+p.pf;
+p.status; // [ 7, false ]
+
+p = PCS[5, 4, 1];
+p.pf;
+p.status; // [ 7, true ]
+::
+returns:: An link::Classes/Array::.
+
+METHOD:: relations
+Same as link::#status:: but compared to other link::Classes/PCS:: instead of its PF.
+ARGUMENT:: that
+Another PCS that strong::must:: be of the same SC (emphasis::set-class::).
+code::
+p = PCS[8, 7, 0];
+q = PCS[5, 6, 1];
+p relations: q;
+::
+returns:: An link::Classes/Array::.
+
+METHOD:: postStatus
+Post the link::#status:: of the link::Classes/PCS:: in relation to its PF.
+code::
+p = PCS[8, 7, 0];
+p.pf;
+p.status; // [ 7, false ]
+p.postStatus;
+
+p = PCS[5, 4, 1];
+p.pf;
+p.status; // [ 7, true ]
+p.postStatus;
+::
+returns:: A link::Classes/Boolean::.
+
+
+
+METHOD:: icv
+Returns an link::Classes/Array:: of seven link::Classes/Integer:: each one representing the cuantity of each IC (emphasis::interval-class::) present in a link::Classes/PCS::. Acording to the Morris table (Morris 1987) the first element of the array represents the IC-0 and is always coincident with the cardinal number of the link::Classes/PCS::.
+
+code::
+p = PCS[0, 8, 11, 4, 9]; // Schoenberg's farben
+p.name;
+p.icv; // [ 5, 2, 1, 2, 3, 2, 0 ]
+::
+
+returns:: An link::Classes/Array::.
+
+
+
+METHOD:: kh
+Checks if two link::Classes/PCS:: are in emphasis::kh:: relation.
+ARGUMENT:: other
+A link::Classes/PCS:: to compare.
+ARGUMENT:: type
+A link::Classes/Symbol:: denoting the type of the relation: 1) code::'abstract'::, if the relation is between the SC of each link::Classes/PCS:: or 2) code::'literal':: if the relation is between the two link::Classes/PCS::.
+returns:: A link::Classes/Boolean::.
+
+METHOD:: k
+Checks if two link::Classes/PCS:: are in emphasis::k:: relation.
+ARGUMENT:: other
+A link::Classes/PCS:: to compare.
+ARGUMENT:: type
+A link::Classes/Symbol:: denoting the type of the relation: 1) code::'abstract'::, if the relation is between the SC of each link::Classes/PCS:: or 2) code::'literal':: if the relation is between the two link::Classes/PCS::.
+returns:: A link::Classes/Boolean::.
+
+
+
+METHOD:: permute
+(describe method here)
+
+ARGUMENT:: nthPermutation
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: subsets
+(describe method here)
+
+ARGUMENT:: k
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: partitions
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+METHOD:: relations
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+METHOD:: sim
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: asim
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: icvsim
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+
+METHOD:: r0
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: r1
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: r2
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: rp
+(describe method here)
+
+ARGUMENT:: that
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+
+METHOD:: name
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: cardinal
+returns:: The cardinal number of the link::Classes/PCS:: as an link::Classes/Integer::.
+
+METHOD:: ordinal
+returns:: The ordinal number of the link::Classes/PCS:: as an link::Classes/Integer::.
+
+METHOD:: primeForm
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: pf
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: normalOrder
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+METHOD:: iv
+Returns an link::Classes/Array:: of eight elements. The first four denotates the quantity of total invariances obtained when the link::Classes/PCS:: is subjected to code::t(n)::, code::i.t(n)::, code::t(n).m:: and code::t(n).m.i::. The last four denotates the quantity of times that the link::Classes/PCS:: can be in its link::#complement:: (total variance) when the link::Classes/PCS:: is subjected to code::t(n)::, code::i.t(n)::, code::t(n).m:: and code::t(n).m.i::. Moris (1984), pg. 313.
+code::
+p = PCS[0, 1, 3, 11];
+p.iv; // [ 1, 0, 0, 0, 3, 4, 1, 1 ]
+::
+returns:: An link::Classes/Array::.
+
+METHOD:: cint1
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+METHOD:: add
+(describe method here)
+
+ARGUMENT:: item
+(describe argument here)
+
+returns:: (describe returnvalue here)
+
+
+METHOD:: mmi
+Returns the ordinal number of a SC which is related to the SC of this link::Classes/PCS:: by code::t(n).m:: or code::t(n).m.i::. Morris 1987, pg. 313.
+
+code::
+// the m and mi operators maps a succession of 4th or 5th
+// to a chromatic scale.
+p = PCS('4-1');
+o = p.mmi;
+q = PCS('4-' ++ o);
+q.name;
+::
+
+returns:: An link::Classes/Integer::.
+
+
+
+
+METHOD:: complement
+(describe method here)
+
+returns:: (describe returnvalue here)
+
+
+
+
+
+SUBSECTION:: Private Instance Methods
+
+
+METHOD:: pcsHash
+Used for table lookup.
+returns:: Returns an link::Classes/Integer:: with the hash of this link::Classes/PCS::.
+
+METHOD:: scIsSubsetOf
+METHOD:: scComplement
+Returns the complement of the PF in PF.
+returns:: A link::Classes/PCS::.
+
+METHOD:: prKKHPreconditions
+METHOD:: prKKHSetup
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::
