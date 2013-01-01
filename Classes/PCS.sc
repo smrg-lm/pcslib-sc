@@ -229,8 +229,8 @@ PCS : OrderedIdentitySet {
 	multiplication { arg n = 1; ^(this.asArray * n mod: 12).as(PCS) }
 
 	*inversion { arg arr; ^(12 - arr.asArray mod: 12) }
-	*transposition { arg arr, n; ^(arr.asArray + n mod: 12) }
-	*multiplication { arg arr, n; ^(arr.asArray * n mod: 12) }
+	*transposition { arg arr, n = 0; ^(arr.asArray + n mod: 12) }
+	*multiplication { arg arr, n = 1; ^(arr.asArray * n mod: 12) }
 
 	powerset {
 		var result = this.asArray.powerset;
