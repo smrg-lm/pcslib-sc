@@ -553,8 +553,11 @@ PCS : OrderedIdentitySet {
 	// for number of binary, etc. partitions
 	*stirlingNumber { arg k, n = 12;
 		var ret = 0;
-		(0..k).do({ arg j;
-			ret = ret  + (-1.pow(j-k) * (j.pow(n-1) /
+		if(k == n) { ^1 };
+		if(k == 0) { ^0 };
+		if(k > n) { "k must be <= n, k = %, n = %".format(k, n).warn; ^nil };
+		(1..k).do({ arg j;
+			ret = ret  + (-1.pow(k-j) * (j.pow(n-1) /
 			((j - 1).factorial * (k - j).factorial)));
 		});
 		^ret;
