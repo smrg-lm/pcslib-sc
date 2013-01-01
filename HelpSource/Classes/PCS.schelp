@@ -44,6 +44,9 @@ NOTE::
 It is allowed to use the array like creation shortcut e.g. code::PCS[1, 2, 3]::.
 ::
 
+NOTE::
+If an link::Classes/Integer:: is passed as parameter, the inherited constructor is called and an empty link::Classes/PCS:: is created.
+::
 
 METHOD:: transposition
 Transpose an link::Classes/Array:: of link::Classes/Integer::s as PCs. Keeps PC repetitions.
@@ -66,59 +69,49 @@ PCS.multiplication([3, 8, 11, 60, 63], 5);
 
 SUBSECTION:: Useful Numbers for Pre-Calculation
 
+NOTE:: There are instance methods variants with code::n = this.size:: by default.::
+
 METHOD:: numberOfPermutations
-(describe method here)
-
+The number of permutations of emphasis::n:: elements.
 ARGUMENT:: n
-(describe argument here)
-
-returns::
-An link::Classes/Integer::.
-
-METHOD:: stirlingNumber
-(describe method here)
-
-ARGUMENT:: k
-(describe argument here)
-
-ARGUMENT:: n
-(describe argument here)
-
+Number of elements. An link::Classes/Integer::.
 returns::
 An link::Classes/Integer::.
 
 METHOD:: numberOfVariations
-(describe method here)
-
+The number of variations of emphasis::k:: elements from a set of emphasis::n:: elemets.
 ARGUMENT:: k
-(describe argument here)
-
+Number of elements of the variation. An link::Classes/Integer::.
 ARGUMENT:: n
-(describe argument here)
-
+Number of elements of the set. An link::Classes/Integer::.
 returns::
 An link::Classes/Integer::.
 
 METHOD:: numberOfSubsets
-(describe method here)
-
+The number of subsets of emphasis::k:: elements from a set of emphasis::n:: elements.
 ARGUMENT:: k
-(describe argument here)
-
+Number of elements of the subset. An link::Classes/Integer::.
 ARGUMENT:: n
-(describe argument here)
+Number of elements of the set. An link::Classes/Integer::.
+returns::
+An link::Classes/Integer::.
 
+METHOD:: stirlingNumber
+Stirling number of the second kind. The number of emphasis::k::-nary partitions from a set of emphasis::n:: elements (see: link::http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind::).
+ARGUMENT:: k
+Number of partitions. An link::Classes/Integer::.
+ARGUMENT:: n
+Number of elements of the set. An link::Classes/Integer::.
 returns::
 An link::Classes/Integer::.
 
 METHOD:: bellNumber
-(describe method here)
-
+The number of all partitions of a set of emphasis::n:: elements.
 ARGUMENT:: n
-(describe argument here)
-
+Number of elements of the set. An link::Classes/Integer::.
 returns::
 An link::Classes/Integer::.
+
 
 
 SUBSECTION:: Private Class Methods
@@ -452,30 +445,31 @@ returns:: code::this::.
 
 SUBSECTION:: Useful Numbers for Pre-Calculation (Instance Methods)
 
-METHOD:: stirlingNumber
-(describe method here)
-ARGUMENT:: k
-(describe argument here)
-returns:: (describe returnvalue here)
-
-METHOD:: numberOfSubsets
-(describe method here)
-ARGUMENT:: k
-(describe argument here)
-returns:: (describe returnvalue here)
+METHOD:: numberOfPermutations
+The number of permutations of this link::Classes/PCS::.
+returns:: An link::Classes/Integer::.
 
 METHOD:: numberOfVariations
-(describe method here)
+The number of variations of emphasis::k:: elements from this this link::Classes/PCS::.
 ARGUMENT:: k
-(describe argument here)
-returns:: (describe returnvalue here)
+Number of elements. An link::Classes/Integer::.
+returns:: An link::Classes/Integer::.
+
+METHOD:: numberOfSubsets
+The number of subsets of emphasis::k:: elements from this link::Classes/PCS::.
+ARGUMENT:: k
+Number of elements. An link::Classes/Integer::.
+returns:: An link::Classes/Integer::.
+
+METHOD:: stirlingNumber
+Stirling number of the second kind. The number of k-nary partitions from this link::Classes/PCS:: (see: http://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind).
+ARGUMENT:: k
+Number of partitions. An link::Classes/Integer::.
+returns:: An link::Classes/Integer::.
 
 METHOD:: bellNumber
-(describe method here)
-returns:: (describe returnvalue here)
-METHOD:: numberOfPermutations
-(describe method here)
-returns:: (describe returnvalue here)
+The number of all partitions of this link::Classes/PCS::.
+returns:: An link::Classes/Integer::.
 
 
 
