@@ -28,8 +28,10 @@ PCSMatrix {
 	initRomanMatrix { arg hn;
 		type = \roman;
 
-		if(hn.class == PCS, {
+		case({ hn.class == PCS }, {
 			hn = hn.asArray.clump(1).collect({ arg i; i.as(PCS) });
+		}, { hn.class == Array }, {
+			hn = hn.clump(1).collect({ arg i; i.at(0).asArray.as(PCS) });
 		});
 
 		hnorm = vnorm = hn;
