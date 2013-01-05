@@ -1,0 +1,315 @@
+TITLE:: PCSMatrix
+summary:: (put short description here)
+categories:: Undocumented classes
+related:: Classes/PCS, Classes/PCSChain, Classes/SCTable
+
+
+
+DESCRIPTION::
+(put long description here)
+
+
+
+CLASSMETHODS::
+
+SUBSECTION:: Creation Methods
+
+METHOD:: fromArray
+Creates a link::Classes/PCSMatrix:: from a matrix.
+ARGUMENT:: arr
+An link::Classes/Array:: of link::Classes/Array::s of link::Classes/Integer::s or link::Classes/Array::s (of link::Classes/Integer::s) or link::Classes/PCS::s.
+NOTE:: The lenght of the rows (1th level sub-arrays) mut be equal.::
+ARGUMENT:: type
+A link::Classes/Symbol:: as the link::Classes/PCSMatrix#-type:: of the link::Classes/PCSMatrix::. Can be a custom name when using this method.
+code::
+(
+// OK
+PCSMatrix.fromArray([
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 9]
+]);
+)
+
+(
+// OK
+PCSMatrix.fromArray([
+	[PCS[1, 2], 2, 3],
+	[4, 5, 6],
+	[7, 8, 9]
+]);
+)
+
+(
+// OK
+PCSMatrix.fromArray([
+	[[1, 2], 3, []],
+	[5, PCS[6, 7, 8], 9],
+	[10, 11, [12, 13, 14]]
+]);
+)
+
+(
+// NOT YET
+PCSMatrix.fromArray([
+	PCS[1, 2, 3],
+	PCS[4, 5, 6],
+	PCS[7, 8, 9]
+]);
+)
+
+(
+// NO YET
+PCSMatrix.fromArray([
+	[[1, PCS[2]], 3, []],
+	[5, PCS[6, 7, 8], 9],
+	[10, 11, [12, 13, 14]]
+]);
+)
+::
+returns:: A new link::Classes/PCSMatrix::.
+
+METHOD:: fromChain
+Creates a link::Classes/PCSMatrix:: from a link::Classes/PCSChain:: performing an "offset-by-one+rotation" (for want of a better name) for each row (see note below).
+ARGUMENT:: pcsChain
+A link::Classes/PCSChain::.
+ARGUMENT:: normParts
+Number of parts (items of the chain) that conforms the link::Classes/PCSMatrix#-hnorm::. Must be code::>= 1::.
+NOTE::The norm, parts and code::pcsChain.size:: must be pre-calculated to make a consistent matrix.::
+code::
+c = PCSChain.new;
+c.add(PCS[1]);
+c.add(PCS[2]);
+c.add(PCS[3]);
+c.add(PCS[4]);
+c.add(PCS[5]);
+c.add(PCS[6]);
+
+// try different number of parts by norm
+// make a consistent example...
+PCSMatrix.fromChain(c, 0); // error
+PCSMatrix.fromChain(c, 1);
+PCSMatrix.fromChain(c, 2);
+PCSMatrix.fromChain(c, 3);
+PCSMatrix.fromChain(c, 4);
+PCSMatrix.fromChain(c, 5);
+PCSMatrix.fromChain(c, 6);
+PCSMatrix.fromChain(c, 7);
+PCSMatrix.fromChain(c, 8);
+::
+returns:: A new link::Classes/PCSMatrix::.
+
+METHOD:: roman
+Creates a emphasis::roman square:: from code::norm::.
+ARGUMENT:: norm
+A link::Classes/PCS:: or an link::Classes/Array:: of link::Classes/Integer::s or link::Classes/PCS::s or link::Classes/Array:: (of link::Classes/Integer::s).
+code::
+PCSMatrix.roman([1, 2, 3]);
+PCSMatrix.roman(PCS[1, 2, 3]);
+PCSMatrix.roman([1, 2, [3, 4]]);
+PCSMatrix.roman([PCS[1, 2], PCS[3]]);
+PCSMatrix.roman([0, PCS[1, 2], PCS[3], [4, 5]]);
+::
+returns:: A new link::Classes/PCSMatrix::.
+
+METHOD:: t1a
+(describe method here)
+ARGUMENT:: norm
+(describe argument here)
+returns:: A new link::Classes/PCSMatrix::.
+
+METHOD:: t1b
+(describe method here)
+ARGUMENT:: norm
+(describe argument here)
+returns:: A new link::Classes/PCSMatrix::.
+
+METHOD:: t2
+(describe method here)
+ARGUMENT:: hnorm
+(describe argument here)
+ARGUMENT:: vnorm
+(describe argument here)
+returns:: A new link::Classes/PCSMatrix::.
+
+METHOD:: opcy
+(describe method here)
+ARGUMENT:: norm
+(describe argument here)
+ARGUMENT:: op
+(describe argument here)
+returns:: A new link::Classes/PCSMatrix::.
+
+
+
+INSTANCEMETHODS::
+
+
+METHOD:: matrix
+Holds the link::Classes/PCSMatrix:: as an link::Classes/Array:: of link::Classes/PCS::s.
+returns:: An link::Classes/Array::.
+
+METHOD:: type
+Returns the name of the creation procedure of the matrix.
+returns:: A link::Classes/Symbol::.
+
+METHOD:: asciiPlot
+ASCII plot of the matrix.
+NOTE::A = 10, B = 11::
+ARGUMENT:: stream
+ARGUMENT:: lines
+returns:: code::this::.
+
+METHOD:: hnorm
+Holds the horizontal norm of the matrix taken from the first row.
+NOTE::This method is only useful if the matrix was created consistently.::
+returns:: An link::Classes/Array:: of link::Classes/PCS::s.
+
+METHOD:: vnorm
+Returns the vertical norm of the matrix taken from the first column.
+NOTE::This method is only useful if the matrix was created consistently.::
+returns:: An link::Classes/Array:: of link::Classes/PCS::s.
+
+METHOD:: pcsAtPos
+(describe method here)
+ARGUMENT:: x
+(describe argument here)
+ARGUMENT:: y
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: pcsAtRow
+(describe method here)
+ARGUMENT:: n
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: pcsAtCol
+(describe method here)
+ARGUMENT:: n
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: pcsAtAll
+(describe method here)
+returns:: (describe returnvalue here)
+
+METHOD:: hist
+Histogram of the quantity of PCs contained in the matrix.
+returns:: An link::Classes/Array:: of 12 link::Classes/Integer::s.
+
+METHOD:: t
+(describe method here)
+ARGUMENT:: n
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: m
+(describe method here)
+ARGUMENT:: n
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: i
+(describe method here)
+returns:: (describe returnvalue here)
+
+METHOD:: invX
+(describe method here)
+returns:: (describe returnvalue here)
+
+METHOD:: invY
+(describe method here)
+returns:: (describe returnvalue here)
+
+METHOD:: eRow
+(describe method here)
+ARGUMENT:: r1
+(describe argument here)
+ARGUMENT:: r2
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: eCol
+(describe method here)
+ARGUMENT:: c1
+(describe argument here)
+ARGUMENT:: c2
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: rD
+(describe method here)
+returns:: (describe returnvalue here)
+
+METHOD:: r90
+(describe method here)
+ARGUMENT:: clockwise
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: performOnMatrix
+(describe method here)
+ARGUMENT:: op
+(describe argument here)
+ARGUMENT::  ... args
+(describe argument here)
+returns:: (describe returnvalue here)
+
+
+
+SUBSECTION:: Private Instance Methods
+
+METHOD:: initMatrixFromArray
+(describe method here)
+ARGUMENT:: arr
+(describe argument here)
+ARGUMENT:: t
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: initChainMatrix
+(describe method here)
+ARGUMENT:: hn
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: initTypeMatrix
+(describe method here)
+ARGUMENT:: hn
+(describe argument here)
+ARGUMENT:: vn
+(describe argument here)
+ARGUMENT:: t
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: initRomanMatrix
+(describe method here)
+ARGUMENT:: hn
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: initOpcyMatrix
+(describe method here)
+ARGUMENT:: norm
+(describe argument here)
+ARGUMENT:: op
+(describe argument here)
+ARGUMENT:: t
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: printOn
+(describe method here)
+ARGUMENT:: stream
+(describe argument here)
+returns:: (describe returnvalue here)
+
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::
