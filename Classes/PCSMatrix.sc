@@ -76,14 +76,18 @@ PCSMatrix {
 	}
 
 	*fromChain { arg pcsChain, normParts = 2;
+		if(normParts < 1, {
+			Error("PCSMatrix *fromChain: normParts < 1").throw;
+		});
 		^super.new.initChainMatrix(pcsChain.asArray.clump(normParts));
 	}
 
 	initChainMatrix { arg hn;
+		var rowSize = max(hn.size, hn.at(0).size);
 		type = \chain;
 
 		matrix = hn.collect({ arg i, j;
-			(i ++ PCS[].dup(hn.size - i.size)).rotate(j);
+			(i ++ PCS[].dup(rowSize - i.size)).rotate(j);
 		});
 		hnorm = hn.at(0);
 		vnorm = matrix.flop.at(0).reject(_.isEmpty);
