@@ -55,7 +55,7 @@ PCSChain : List {
 		});
 	}
 
-	addCand { arg index, postNext = true;
+	addCand { arg index, postNext = false;
 		if(candList.isNil, {
 			("PCSChain: candidates were not initialized, now they are").warn;
 			this.candidates;
@@ -108,4 +108,3 @@ PCSChain : List {
 		^(this.size - res).sum / (this.size * cand.cardinal);
 	}
 }
-
