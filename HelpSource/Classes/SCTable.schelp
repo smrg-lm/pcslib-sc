@@ -1,0 +1,58 @@
+TITLE:: SCTable
+summary:: Set-Class Table
+categories:: Classes
+related:: Classes/PCS, Classes/PCSMatrix, Classes/PCSChain
+
+
+
+DESCRIPTION::
+Table of the set-classes as defined by Forte with some additional information by Morris and others. Provides information for the link::Classes/PCS:: class.
+
+
+CLASSMETHODS::
+
+METHOD:: indexOf
+(describe method here)
+ARGUMENT:: x
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: pfOf
+(describe method here)
+ARGUMENT:: name
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: table
+(describe method here)
+returns:: (describe returnvalue here)
+
+METHOD:: entryOf
+(describe method here)
+ARGUMENT:: x
+(describe argument here)
+returns:: (describe returnvalue here)
+
+METHOD:: nameOf
+(describe method here)
+ARGUMENT:: pcs
+(describe argument here)
+returns:: (describe returnvalue here)
+
+
+
+SUBSECTION:: Private Class Methods
+
+METHOD:: initClass
+Inits the set-class table at compile time.
+
+
+INSTANCEMETHODS::
+
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::

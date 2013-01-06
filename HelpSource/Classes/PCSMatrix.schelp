@@ -1,13 +1,12 @@
 TITLE:: PCSMatrix
-summary:: (put short description here)
-categories:: Undocumented classes
+summary:: PCS Combinaroty Matrix
+categories:: Classes
 related:: Classes/PCS, Classes/PCSChain, Classes/SCTable
 
 
 
 DESCRIPTION::
-(put long description here)
-
+This class represents a combinatory matrix of link::Classes/PCS::s, mainly non-serial combinatory matrices.
 
 
 CLASSMETHODS::

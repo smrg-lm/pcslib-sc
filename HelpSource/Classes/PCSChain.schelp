@@ -1,0 +1,72 @@
+TITLE:: PCSChain
+summary:: A chain of PCS build by different procedures.
+categories:: Classes
+related:: Classes/PCS, Classes/PCSMatrix, Classes/SCTable
+
+
+DESCRIPTION::
+A chain of link::Classes/PCS:: build by different procedures.
+WARNING::This class is incomplete regarding building procedures.::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new link::Classes/PCSChain::.
+ARGUMENT:: norm
+A link::Classes/PCS:: as the norm of the chain for further elaboration.
+code::
+c = PCSChain.new(PCS[0, 2, 4]);
+c.norm; // PCS[0, 2, 4]
+c = PCSChain.new;
+c.norm; // nil
+::
+NOTE::
+A free chain can be build using the link::Classes/List#-add:: method without using a norm.
+::
+returns::A new link::Classes/PCSChain::.
+
+
+
+INSTANCEMETHODS::
+
+METHOD:: norm
+Gets and sets the norm of the chain. Can be changed in the middle of the elaboration process however the new norm must have the same cardinal number as the previous.
+ARGUMENT:: pcs
+A link::Classes/PCS:: as the new norm.
+returns:: A link::Classes/PCS::.
+
+METHOD:: candList
+Returns the list of candidates as link::Classes/Array::s.
+returns:: An link::Classes/Array:: of candidates (as link::Classes/Array::s).
+
+METHOD:: candidates
+Explicit call to calculates the possible candidates.
+ARGUMENT:: postList
+If code::true:: (default) prints the list of candidates.
+returns:: code::this::.
+
+METHOD:: addCand
+Adds a candidate to the link::Classes/PCSChain::.
+ARGUMENT:: index
+The index of the candidate in the link::Classes/PCSChain#-candList::.
+ARGUMENT:: postNext
+Optionally post the next list of candidates.
+returns:: code::this::.
+
+METHOD:: scores
+Returns the scores of the available candidates.
+returns:: An link::Classes/Array:: of scores.
+
+
+
+SUBSECTION:: Private Instance Methods
+
+METHOD:: prScore
+
+
+EXAMPLES::
+
+code::
+(some example code)
+::
