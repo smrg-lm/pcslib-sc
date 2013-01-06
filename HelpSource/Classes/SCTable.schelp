@@ -9,35 +9,36 @@ DESCRIPTION::
 Table of the set-classes as defined by Forte with some additional information by Morris and others. Provides information for the link::Classes/PCS:: class.
 
 
+
 CLASSMETHODS::
 
+METHOD:: table
+Holds the table of link::Classes/PCS::s.
+returns:: An link::Classes/Array:: of link::Classes/Array::s.
+
 METHOD:: indexOf
-(describe method here)
+Table index of the link::Classes/PCS::.
 ARGUMENT:: x
-(describe argument here)
-returns:: (describe returnvalue here)
+A symbolic name (link::Classes/Symbol:: or link::Classes/String::) in the form: code::'card-ord':: or a link::Classes/PCS::.
+returns:: The index of the link::Classes/PCS:: in the table as an link::Classes/Integer::.
 
 METHOD:: pfOf
-(describe method here)
+emphasis::Prime form:: of the given link::Classes/PCS#-name::.
 ARGUMENT:: name
-(describe argument here)
-returns:: (describe returnvalue here)
-
-METHOD:: table
-(describe method here)
-returns:: (describe returnvalue here)
+A symbolic name (link::Classes/Symbol:: or link::Classes/String::).
+returns:: A link::Classes/PCS:: in emphasis::prime form::.
 
 METHOD:: entryOf
-(describe method here)
+Returns the entry of the given link::Classes/PCS:: in the table.
 ARGUMENT:: x
-(describe argument here)
-returns:: (describe returnvalue here)
+A symbolic name (link::Classes/Symbol:: or link::Classes/String::) in the form: code::'card-ord':: or a link::Classes/PCS::.
+returns:: An link::Classes/Array::.
 
 METHOD:: nameOf
-(describe method here)
+Returns the symbolic name of a link::Classes/PCS::.
 ARGUMENT:: pcs
-(describe argument here)
-returns:: (describe returnvalue here)
+A link::Classes/PCS::.
+returns:: A link::Classes/Symbol::.
 
 
 
@@ -45,6 +46,7 @@ SUBSECTION:: Private Class Methods
 
 METHOD:: initClass
 Inits the set-class table at compile time.
+
 
 
 INSTANCEMETHODS::
