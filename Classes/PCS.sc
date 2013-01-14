@@ -310,6 +310,9 @@ PCS : OrderedIdentitySet {
 			Error("PCS: cardinal number > 8 are not supported for binpart").throw;
 		});
 		if(ab.notNil, {
+			if(ab.size != 2, {
+				Error("PCS: binpart ab arg size must be 2").throw;
+			});
 			if(ab.sum != this.size, {
 				Error("PCS: binpart ab arg sum must be equal to size").throw;
 			});
@@ -560,7 +563,7 @@ PCS : OrderedIdentitySet {
 			ret = ret  + (-1.pow(k-j) * (j.pow(n-1) /
 			((j - 1).factorial * (k - j).factorial)));
 		});
-		^ret;
+		^ret.round.asInteger;
 	}
 
 	stirlingNumber { arg k;

@@ -153,8 +153,8 @@ Shortcut for link::Classes/PCS#-primeForm::.
 returns:: A link::Classes/PCS::.
 
 METHOD:: normalOrder
-(describe method here)
-returns:: (describe returnvalue here)
+The emphasis::normal order:: is one of the ordered permutations that has the smallest interval between the first and last element. If there is more than one of those permutations returns the one that is lexicographically first.
+returns:: A link::Classes/PCS::.
 
 METHOD:: mmi
 Returns the ordinal number of a SC which is related to the SC of this link::Classes/PCS:: by code::t(n).m:: or code::t(n).m.i::. Morris 1987, pg. 313.
@@ -339,26 +339,26 @@ returns:: A link::Classes/Boolean::.
 METHOD:: r0
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
-returns:: (describe returnvalue here)
+A link::Classes/PCS:: to compare.
+returns:: A link::Classes/Boolean::.
 
 METHOD:: r1
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
-returns:: (describe returnvalue here)
+A link::Classes/PCS:: to compare.
+returns:: A link::Classes/Boolean::.
 
 METHOD:: r2
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
-returns:: (describe returnvalue here)
+A link::Classes/PCS:: to compare.
+returns:: A link::Classes/Boolean::.
 
 METHOD:: rp
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
-returns:: (describe returnvalue here)
+A link::Classes/PCS:: to compare.
+returns:: A link::Classes/Boolean::.
 
 
 
@@ -367,19 +367,19 @@ SUBSECTION:: Similarity Measurement
 METHOD:: sim
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
+A link::Classes/PCS:: to compare.
 returns:: (describe returnvalue here)
 
 METHOD:: asim
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
+A link::Classes/PCS:: to compare.
 returns:: (describe returnvalue here)
 
 METHOD:: icvsim
 (describe method here)
 ARGUMENT:: that
-(describe argument here)
+A link::Classes/PCS:: to compare.
 returns:: (describe returnvalue here)
 
 
@@ -391,47 +391,34 @@ Returns the emphasis::literal:: complement, that is to say all the PCs that are 
 returns:: A link::Classes/PCS::.
 
 METHOD:: subsets
-(describe method here)
+Returns all the subsets of strong::k:: elements.
 ARGUMENT:: k
-(describe argument here)
-returns:: (describe returnvalue here)
+Size of the subsets.
+returns:: An link::Classes/Array:: of link::Classes/PCS::.
 
 METHOD:: partitions
-(describe method here)
-returns:: (describe returnvalue here)
+Returns all the partitions of this link::Classes/PCS::. The number of partitions is given by the link::Classes/PCS#-bellNumber::.
+returns:: An link::Classes/Array:: of link::Classes/Array::s of link::Classes/PCS::s.
 
 METHOD:: varpart
-(describe method here)
-ARGUMENT:: arr
-(describe argument here)
-returns:: (describe returnvalue here)
+Sort of variable partition, this method is private by now use at your own risk.
 
 METHOD:: binpart
-(describe method here)
+Returns binary partitions of the link::Classes/PCS::. The number of all the possible binary partitions is given by the link::Classes/PCS#-stirlingNumber:: with code::k = 2::.
 ARGUMENT:: ab
-(describe argument here)
+An link::Classes/Array:: of two link::Classes/Integer::s with the number of elements of the partitions, its sum must be equal to link::Classes/PCS#-size::. This argument acts as a filter.
 ARGUMENT:: variations
-(describe argument here)
-returns:: (describe returnvalue here)
+warning::Broken, may be removed.::
+returns:: An link::Classes/Array:: of link::Classes/Array::s of link::Classes/PCS::s.
 
 METHOD:: permute
-(describe method here)
-ARGUMENT:: nthPermutation
-(describe argument here)
-returns:: (describe returnvalue here)
+Same as link::Classes/Array#-permute::.
 
 METHOD:: vary
-(describe method here)
-ARGUMENT:: k
-(describe argument here)
-ARGUMENT:: nthPermutation
-(describe argument here)
-returns:: (describe returnvalue here)
+warning::Broken, may be removed.::
 
 METHOD:: powerset
-(describe method here)
-returns:: (describe returnvalue here)
-
+Same as link::Classes/Array#-powerset::.
 
 
 SUBSECTION:: Data Struture Operations
