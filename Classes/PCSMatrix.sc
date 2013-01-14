@@ -174,7 +174,23 @@ PCSMatrix {
 	}
 
 	rD {
-		// ver qué es, tal vez es invX comb invY?
+		var size, arr;
+
+		if(matrix.size != matrix.at(0).size, {
+			Error("PCSMatrix-rD the matrix must be squared").throw;
+		});
+
+		size = matrix.size;
+		arr = Array.fill2D(size, size);
+
+		// r90.invY
+		size.do({ arg i;
+			(size-i).do({ arg j;
+				arr[i][j] = matrix[size-1-j][size-1-i];
+				arr[size-1-j][size-1-i] = matrix[i][j];
+			});
+		});
+		^PCSMatrix.fromArray(arr, this.type);
 	}
 
 	invX {

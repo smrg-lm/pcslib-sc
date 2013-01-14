@@ -170,140 +170,101 @@ NOTE::This method is only useful if the matrix was created consistently.::
 returns:: An link::Classes/Array:: of link::Classes/PCS::s.
 
 METHOD:: pcsAtPos
-(describe method here)
+Returns the link::Classes/PCS:: at row x, column y.
 ARGUMENT:: x
-(describe argument here)
+An link::Classes/Integer::.
 ARGUMENT:: y
-(describe argument here)
-returns:: (describe returnvalue here)
+An link::Classes/Integer::.
+returns:: A link::Classes/PCS::.
 
 METHOD:: pcsAtRow
-(describe method here)
+Returns the resulting link::Classes/PCS:: at row n.
 ARGUMENT:: n
-(describe argument here)
-returns:: (describe returnvalue here)
+An link::Classes/Integer::.
+returns:: link::Classes/PCS::.
 
 METHOD:: pcsAtCol
-(describe method here)
+Returns the resulting link::Classes/PCS:: at column n.
 ARGUMENT:: n
-(describe argument here)
-returns:: (describe returnvalue here)
+An link::Classes/Integer::.
+returns:: link::Classes/PCS::
 
 METHOD:: pcsAtAll
-(describe method here)
-returns:: (describe returnvalue here)
+Return the resulting link::Classes/PCS:: of the whole matrix.
+returns:: link::Classes/PCS::
 
 METHOD:: hist
 Histogram of the quantity of PCs contained in the matrix.
 returns:: An link::Classes/Array:: of 12 link::Classes/Integer::s.
 
 METHOD:: t
-(describe method here)
+Performs link::Classes/PCS#-t:: on each element of the matrix.
 ARGUMENT:: n
-(describe argument here)
-returns:: (describe returnvalue here)
+An Integer number of chromatic degrees, can be negative.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: m
-(describe method here)
+Performs link::Classes/PCS#-m:: on each element of the matrix.
 ARGUMENT:: n
-(describe argument here)
-returns:: (describe returnvalue here)
+Multiplication factor. An link::Classes/Integer::.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: i
-(describe method here)
-returns:: (describe returnvalue here)
+Performs link::Classes/PCS#-i:: on each element of the matrix.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: invX
-(describe method here)
-returns:: (describe returnvalue here)
+Specular inversion of the matrix over the x axis.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: invY
-(describe method here)
-returns:: (describe returnvalue here)
+Specular inversion of the matrix over the y axis.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: eRow
-(describe method here)
+Swaps rows strong::r1:: and strong::r2::.
 ARGUMENT:: r1
-(describe argument here)
+An link::Classes/Integer::.
 ARGUMENT:: r2
-(describe argument here)
-returns:: (describe returnvalue here)
+An link::Classes/Integer::.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: eCol
-(describe method here)
+Swaps columns strong::c1:: and strong::c2::.
 ARGUMENT:: c1
-(describe argument here)
+An link::Classes/Integer::.
 ARGUMENT:: c2
-(describe argument here)
-returns:: (describe returnvalue here)
+An link::Classes/Integer::.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: rD
-(describe method here)
-returns:: (describe returnvalue here)
+Rotate the matrix by the diagonal. The matrix must be squared. This method is equal but faster than code::this.r90.invY::.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: r90
-(describe method here)
+Rotate the matrix 90 degrees.
 ARGUMENT:: clockwise
-(describe argument here)
-returns:: (describe returnvalue here)
+Direction as a link::Classes/Boolean:: flag. code::true:: -> clockwise, code::false:: -> counter clockwise.
+returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: performOnMatrix
-(describe method here)
+Performs the method strong::op:: on each element of the matrix.
 ARGUMENT:: op
-(describe argument here)
+A link::Classes/Symbol::.
 ARGUMENT::  ... args
-(describe argument here)
-returns:: (describe returnvalue here)
+Arguments of the strong::op:: method.
+returns:: A new link::Classes/PCSMatrix::.
 
 
 
 SUBSECTION:: Private Instance Methods
 
 METHOD:: initMatrixFromArray
-(describe method here)
-ARGUMENT:: arr
-(describe argument here)
-ARGUMENT:: t
-(describe argument here)
-returns:: (describe returnvalue here)
-
 METHOD:: initChainMatrix
-(describe method here)
-ARGUMENT:: hn
-(describe argument here)
-returns:: (describe returnvalue here)
-
 METHOD:: initTypeMatrix
-(describe method here)
-ARGUMENT:: hn
-(describe argument here)
-ARGUMENT:: vn
-(describe argument here)
-ARGUMENT:: t
-(describe argument here)
-returns:: (describe returnvalue here)
-
 METHOD:: initRomanMatrix
-(describe method here)
-ARGUMENT:: hn
-(describe argument here)
-returns:: (describe returnvalue here)
-
 METHOD:: initOpcyMatrix
-(describe method here)
-ARGUMENT:: norm
-(describe argument here)
-ARGUMENT:: op
-(describe argument here)
-ARGUMENT:: t
-(describe argument here)
-returns:: (describe returnvalue here)
-
 METHOD:: printOn
-(describe method here)
-ARGUMENT:: stream
-(describe argument here)
-returns:: (describe returnvalue here)
 
 
 
