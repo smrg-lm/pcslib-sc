@@ -145,7 +145,8 @@ INSTANCEMETHODS::
 
 
 METHOD:: matrix
-Holds the link::Classes/PCSMatrix:: as an link::Classes/Array:: of link::Classes/PCS::s.
+Holds the link::Classes/PCSMatrix:: as an link::Classes/Array:: of link::Classes/Array::s of link::Classes/PCS::s.
+note::Each sub-array is a row of the matrix from the top. The x and y axis are inverted when accessing it with the matrix[][] shortcut::
 returns:: An link::Classes/Array::.
 
 METHOD:: type
