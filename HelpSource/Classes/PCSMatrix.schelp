@@ -153,6 +153,14 @@ METHOD:: type
 Returns the name of the creation procedure of the matrix.
 returns:: A link::Classes/Symbol::.
 
+METHOD:: rowSize
+Returns the number of rows.
+returns:: An link::Classes/Integer::.
+
+METHOD:: colSize
+Returns the number of columns.
+returns:: An link::Classes/Integer::.
+
 METHOD:: asciiPlot
 ASCII plot of the matrix.
 NOTE::A = 10, B = 11::

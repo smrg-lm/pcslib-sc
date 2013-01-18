@@ -325,6 +325,14 @@ PCSMatrix {
 		^ret;
 	}
 
+	rowSize {
+		^this.matrix.size;
+	}
+
+	colSize {
+		^this.matrix.at(0).size;
+	}
+
 	printOn { arg stream;
 		var maxColSize, strSize;
 
