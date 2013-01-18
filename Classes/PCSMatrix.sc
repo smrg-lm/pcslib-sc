@@ -226,58 +226,58 @@ PCSMatrix {
 	}
 
 	//swap
-	swap { arg x1, y1, x2, y2, pc; // swap with params in pdpcslib
+	swap { arg r1, c1, r2, c2, pc; // swap with params in pdpcslib
 		pc = pc.asArray.first; // an int or pcs
-		if(this.matrix[y1][x1].includes(pc) and:
-			this.matrix[y2][x2].includes(pc), {
-				this.matrix[y1][x1].remove(pc);
-				this.matrix[y2][x2].remove(pc);
-				this.matrix[y1][x2].add(pc);
-				this.matrix[y2][x1].add(pc);
+		if(this.matrix[r1][c1].includes(pc) and:
+			this.matrix[r2][c2].includes(pc), {
+				this.matrix[r1][c1].remove(pc);
+				this.matrix[r2][c2].remove(pc);
+				this.matrix[r1][c2].add(pc);
+				this.matrix[r2][c1].add(pc);
 		});
 	}
 
-	prSwapIfDensity { arg x1, y1, x2, y2, pc;
+	prSwapIfDensity { arg r1, c1, r2, c2, pc;
 		if(
-			// if the pc is in the second pos? *why duplicates if not ck x1y1*
-			(this.matrix[y1][x1].includes(pc) and:
-				this.matrix[y2][x2].includes(pc))
+			// if the pc is in the second pos? *why duplicates if not ck r1c1*
+			(this.matrix[r1][c1].includes(pc) and:
+				this.matrix[r2][c2].includes(pc))
 			and:
 			// if the density is lower in some sense
-			(((this.matrix[y1][x1].size > (this.matrix[y1][x2].size)) and:
-				(this.matrix[y2][x2].size > (this.matrix[y2][x1].size)))
+			(((this.matrix[r1][c1].size > (this.matrix[r1][c2].size)) and:
+				(this.matrix[r2][c2].size > (this.matrix[r2][c1].size)))
 				or:
-				((this.matrix[y1][x1].size > (this.matrix[y2][x1].size)) and:
-					(this.matrix[y2][x2].size > (this.matrix[y1][x2].size))))
+				((this.matrix[r1][c1].size > (this.matrix[r2][c1].size)) and:
+					(this.matrix[r2][c2].size > (this.matrix[r1][c2].size))))
 			// swap
 			, {
-				this.matrix[y1][x1].remove(pc);
-				this.matrix[y2][x2].remove(pc);
-				this.matrix[y1][x2].add(pc);
-				this.matrix[y2][x1].add(pc);
+				this.matrix[r1][c1].remove(pc);
+				this.matrix[r2][c2].remove(pc);
+				this.matrix[r1][c2].add(pc);
+				this.matrix[r2][c1].add(pc);
 		});
 	}
 
 	swapping { // swap in pdpcslib *check*
 		var rowCant, colCant;
 
-		rowCant = this.matrix.size;
-		colCant = this.matrix.at(0).size;
+		rowCant = this.rowSize;
+		colCant = this.colSize;
 
 		2.do({ // two passes
 			// external route
-			rowCant.do({ arg y1;
-				colCant.do({ arg x1;
-					// for each pc in x1, y1
-					this.matrix[y1][x1].asArray.do({ arg pc;
+			rowCant.do({ arg r1;
+				colCant.do({ arg c1;
+					// for each pc in r1, c1
+					this.matrix[r1][c1].asArray.do({ arg pc;
 						// internal route
-						// from the next to y1 a quantity of times = rowCant-1
-						// mod12 wraps without reach y1
-						((y1+1)..((y1+1) + (rowCant-1))).do({ arg y2;
-							y2 = y2 mod: rowCant;
-							((x1+1)..((x1+1) + (colCant-1))).do({ arg x2;
-								x2 = x2 mod: colCant;
-								this.prSwapIfDensity(x1, y1, x2, y2, pc);
+						// from the next to r1 a quantity of times = rowCant-1
+						// mod12 wraps without reach r1
+						((r1+1)..((r1+1) + (rowCant-1))).do({ arg r2;
+							r2 = r2 mod: rowCant;
+							((c1+1)..((c1+1) + (colCant-1))).do({ arg c2;
+								c2 = c2 mod: colCant;
+								this.prSwapIfDensity(r1, c1, r2, c2, pc);
 							});
 						});
 					});

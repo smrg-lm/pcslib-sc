@@ -264,7 +264,15 @@ ARGUMENT::  ... args
 Arguments of the strong::op:: method.
 returns:: A new link::Classes/PCSMatrix::.
 
+METHOD:: swap
+Swaps the PC strong::pc:: in a rectangle defined by the coordinates strong::r1 c1:: and strong::r2 c2::. strong::pc:: can be and link::Classes/Integer:: or a link::Classes/PCS:: of cardinality one (if greater the first pc is taken). Swappin keeps the coherence of the matrix.
+NOTE::This operation is made in place.::
+returns:: code::this::.
 
+METHOD:: swapping
+Performs successive swaps to reduce the matrix density keeping its coherence (the resulting matrix has the same vertical and horizontal norms for each row/col).
+NOTE::This operation is made in place.::
+returns:: code::this::.
 
 SUBSECTION:: Private Instance Methods
 
@@ -274,6 +282,7 @@ METHOD:: initTypeMatrix
 METHOD:: initRomanMatrix
 METHOD:: initOpcyMatrix
 METHOD:: printOn
+METHOD:: prSwapIfDensity
 
 
 
