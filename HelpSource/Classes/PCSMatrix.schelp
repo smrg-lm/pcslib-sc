@@ -202,6 +202,26 @@ METHOD:: pcsAtAll
 Return the resulting link::Classes/PCS:: of the whole matrix.
 returns:: link::Classes/PCS::
 
+METHOD:: addAt
+Inserts a PC or link::Classes/PCS:: in the given position (strong::r::, strong::c::).
+ARGUMENT:: r
+An link::Classes/Integer:: indicating the row.
+ARGUMENT:: c
+An link::Classes/Integer:: indicating the column.
+ARGUMENT:: pcs
+An link::Classes/Integer:: or link::Classes/PCS:: to add.
+returns:: code::this::.
+
+METHOD:: removeAt
+Removes a PC or link::Classes/PCS:: in the given position (strong::r::, strong::c::).
+ARGUMENT:: r
+An link::Classes/Integer:: indicating the row.
+ARGUMENT:: c
+An link::Classes/Integer:: indicating the column.
+ARGUMENT:: pcs
+An link::Classes/Integer:: or link::Classes/PCS:: to remove.
+returns:: code::this::.
+
 METHOD:: hist
 Histogram of the quantity of PCs contained in the matrix.
 returns:: An link::Classes/Array:: of 12 link::Classes/Integer::s.

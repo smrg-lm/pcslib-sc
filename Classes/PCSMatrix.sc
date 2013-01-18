@@ -325,6 +325,18 @@ PCSMatrix {
 		^ret;
 	}
 
+	addAt { arg r, c, pcs;
+		pcs.asArray.do({ arg pc;
+			this.matrix[r][c].add(pc);
+		});
+	}
+
+	removeAt { arg r, c, pcs;
+		pcs.asArray.do({ arg pc;
+			this.matrix[r][c].remove(pc);
+		});
+	}
+
 	rowSize {
 		^this.matrix.size;
 	}
