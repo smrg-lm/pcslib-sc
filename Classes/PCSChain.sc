@@ -41,6 +41,7 @@ PCSChain : List {
 				});
 			});
 		});
+		this.prSortCandidates;
 
 		if(postList, {
 			if(this.isEmpty, {
@@ -52,6 +53,30 @@ PCSChain : List {
 					"cand %: %, score: %".format(j, i, this.prScore(i)).postln;
 				});
 			});
+		});
+	}
+
+	prSortCandidates {
+		candList.sort({ arg a, b;
+			var i, noBreak, ret = false;
+			a = a.at(0).asArray;
+			b = b.at(0).asArray;
+
+			if(a.size < b.size, { ret = true });
+			if(a.size == b.size, {
+				i = 0;
+				noBreak = true;
+				while({ (i < a.size) and: noBreak }, {
+					case({ a.at(i) < b.at(i) }, {
+						ret = true; noBreak = false;
+						}, { a.at(i) > b.at(i) }, {
+							ret = false; noBreak = false;
+					});
+					i = i + 1;
+				});
+			});
+
+			ret;
 		});
 	}
 
