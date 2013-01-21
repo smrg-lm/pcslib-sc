@@ -222,6 +222,10 @@ ARGUMENT:: pcs
 An link::Classes/Integer:: or link::Classes/PCS:: to remove.
 returns:: code::this::.
 
+METHOD:: spar
+Sparseness factor of the matrix.
+returns:: A link::Classes/Float::.
+
 METHOD:: hist
 Histogram of the quantity of PCs contained in the matrix.
 returns:: An link::Classes/Array:: of 12 link::Classes/Integer::s.

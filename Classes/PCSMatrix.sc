@@ -1,6 +1,9 @@
 // pcslib-sc 2011
 // Combinatory Matrix
 
+// fix empty matrix to [[PCS[]]]
+// fix m = PCSMatrix.fromArray([[1, 2], [2]]);
+
 PCSMatrix {
 	var <type;
 	var <matrix;
@@ -291,7 +294,24 @@ PCSMatrix {
 
 	// cm_ana
 	//frag
+
 	//spar
+	spar {
+		var n = this.rowSize * this.colSize;
+		var f = 0;
+
+		this.matrix.do({ arg i;
+			if(i.isEmpty, {
+				f = f + 1;
+			}, {
+				i.do({ arg j;
+					j.isEmpty.if({ f = f + 1 });
+				});
+			});
+		});
+		^(n-f)/n;
+	}
+
 	hist {
 		var pfa = Array.fill(12, 0);
 		matrix.do({ arg row;
@@ -342,6 +362,8 @@ PCSMatrix {
 	}
 
 	colSize {
+		if(this.matrix.at(0).isNil, { ^0 }); // fix empty matrix to [[PCS[]]]
+		if(this.matrix.at(0).isEmpty, { ^1 });
 		^this.matrix.at(0).size;
 	}
 
