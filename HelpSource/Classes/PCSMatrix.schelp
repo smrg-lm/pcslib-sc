@@ -17,7 +17,7 @@ METHOD:: fromArray
 Creates a link::Classes/PCSMatrix:: from a matrix.
 ARGUMENT:: arr
 An link::Classes/Array:: of link::Classes/Array::s of link::Classes/Integer::s or link::Classes/Array::s (of link::Classes/Integer::s) or link::Classes/PCS::s.
-NOTE:: The lenght of the rows (1th level sub-arrays) mut be equal.::
+NOTE::If the length of the rows (1th level sub-arrays) are not equal they are padded as empty taking the max row size.::
 ARGUMENT:: type
 A link::Classes/Symbol:: as the link::Classes/PCSMatrix#-type:: of the link::Classes/PCSMatrix::. Can be a custom name when using this method.
 code::

@@ -1,8 +1,7 @@
 // pcslib-sc 2011
 // Combinatory Matrix
 
-// fix empty matrix to [[PCS[]]]
-// fix m = PCSMatrix.fromArray([[1, 2], [2]]);
+// fix empty matrix pos to [[PCS[]]]?
 
 PCSMatrix {
 	var <type;
@@ -14,6 +13,16 @@ PCSMatrix {
 	}
 
 	initMatrixFromArray { arg arr, t;
+		// padLeft smallest rows
+		var maxSize = arr.collect(_.size).maxItem;
+		arr = arr.collect({ arg i;
+			if(i.size < maxSize, {
+				i ++ [].dup(maxSize - i.size);
+			}, {
+				i;
+			});
+		});
+
 		matrix = arr.collect({ arg i;
 			i.collect({ arg j;
 				j.asArray.as(PCS);
@@ -362,7 +371,7 @@ PCSMatrix {
 	}
 
 	colSize {
-		if(this.matrix.at(0).isNil, { ^0 }); // fix empty matrix to [[PCS[]]]
+		if(this.matrix.at(0).isNil, { ^0 }); // fix empty matrix pos to [[PCS[]]]?
 		if(this.matrix.at(0).isEmpty, { ^1 });
 		^this.matrix.at(0).size;
 	}
