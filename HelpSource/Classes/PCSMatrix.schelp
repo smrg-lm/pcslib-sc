@@ -289,7 +289,7 @@ Arguments of the strong::op:: method.
 returns:: A new link::Classes/PCSMatrix::.
 
 METHOD:: swap
-Swaps the PC strong::pc:: in a rectangle defined by the coordinates strong::r1 c1:: and strong::r2 c2::. strong::pc:: can be and link::Classes/Integer:: or a link::Classes/PCS:: of cardinality one (if greater the first pc is taken). Swappin keeps the coherence of the matrix.
+Swaps between columns the PC strong::pc:: in the coordinates strong::r1 c1:: and strong::r2 c2::. strong::pc:: can be and link::Classes/Integer:: or a link::Classes/PCS:: of cardinality one (if greater the first pc is taken). strong::pc:: must exist in both positions for this method to have any effect.
 NOTE::This operation is made in place.::
 returns:: code::this::.
 
