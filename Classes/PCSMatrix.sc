@@ -242,31 +242,24 @@ PCSMatrix {
 		pc = pc.asArray.first; // an int or pcs
 		if(this.matrix[r1][c1].includes(pc) and:
 			this.matrix[r2][c2].includes(pc), {
-				this.matrix[r1][c1].remove(pc);
-				this.matrix[r2][c2].remove(pc);
-				this.matrix[r1][c2].add(pc);
-				this.matrix[r2][c1].add(pc);
+				this.matrix[r1][c1] = this.matrix[r1][c1].copy.remove(pc);
+				this.matrix[r2][c2] = this.matrix[r2][c2].copy.remove(pc);
+				this.matrix[r1][c2] = this.matrix[r1][c2].copy.add(pc);
+				this.matrix[r2][c1] = this.matrix[r2][c1].copy.add(pc);
 		});
 	}
 
 	prSwapIfDensity { arg r1, c1, r2, c2, pc;
 		if(
-			// if the pc is in the second pos? *why duplicates if not ck r1c1*
-			(this.matrix[r1][c1].includes(pc) and:
-				this.matrix[r2][c2].includes(pc))
-			and:
 			// if the density is lower in some sense
-			(((this.matrix[r1][c1].size > (this.matrix[r1][c2].size)) and:
+			((this.matrix[r1][c1].size > (this.matrix[r1][c2].size)) and:
 				(this.matrix[r2][c2].size > (this.matrix[r2][c1].size)))
 				or:
 				((this.matrix[r1][c1].size > (this.matrix[r2][c1].size)) and:
-					(this.matrix[r2][c2].size > (this.matrix[r1][c2].size))))
+					(this.matrix[r2][c2].size > (this.matrix[r1][c2].size)))
+		, {
 			// swap
-			, {
-				this.matrix[r1][c1].remove(pc);
-				this.matrix[r2][c2].remove(pc);
-				this.matrix[r1][c2].add(pc);
-				this.matrix[r2][c1].add(pc);
+			this.swap(r1, c1, r2, c2, pc);
 		});
 	}
 
