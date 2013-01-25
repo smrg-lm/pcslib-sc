@@ -515,6 +515,56 @@ PCS : OrderedIdentitySet {
 		^ret;
 	}
 
+	// double check titn/invariants
+	tMatrix { arg that;
+		var arr, ret;
+
+		arr = that.asArray;
+		ret = this.i.asArray.dup(1).flop;
+		ret = ret.collect({ arg i; arr+i%12 });
+
+		^ret;
+	}
+
+	itMatrix { arg that;
+		var arr, ret;
+
+		arr = that.asArray;
+		ret = this.asArray.dup(1).flop;
+		ret = ret.collect({ arg i; arr+i%12 });
+
+		^ret;
+	}
+
+	invariants { arg that, subset, op = \t;
+		var arr, aux, posi, ret = [];
+
+		if(subset.isSubsetOf(that), {
+			posi = subset.asArray.collect({ arg pc;
+				that.asArray.indexOf(pc);
+			});
+		}, {
+			Error("subset must be a subset of that").throw;
+		});
+		switch( op,
+			\t, { arr = this.tMatrix(that); },
+			\it, { arr = this.itMatrix(that); },
+			{ Error("op must be \t or \it").throw }
+		);
+		aux = Array.fill(12, 0).dup(subset.size);
+
+		arr.do({ arg row;
+			posi.do({ arg pos, j;
+				aux[j][row.at(pos)] = 1;
+			});
+		});
+		aux.sum.do({ arg i, j;
+			if(i == subset.size, { ret = ret.add(j) });
+		});
+
+		^ret;
+	}
+
 	*numberOfSubsets { arg k, n = 12;
 		^n.factorial / (k.factorial * (n - k).factorial)
 	}
