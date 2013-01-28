@@ -132,4 +132,12 @@ PCSChain : List {
 
 		^(this.size - res).sum / (this.size * cand.cardinal);
 	}
+
+	embedInStream { arg inval;
+		this.do({ arg pcs; inval = pcs.embedInStream(inval) });
+	}
+
+	asStream {
+		^Routine({ arg inval; this.embedInStream(inval) })
+	}
 }

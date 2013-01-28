@@ -649,5 +649,13 @@ PCS : OrderedIdentitySet {
 	//addAll { }
 	//species { ^this.class }
 	//copy { ^this.deepCopy } // SUPERCLASS FIXED 3.5
-}
 
+	embedInStream { arg inval;
+		this.do({ arg pc; inval = pc.yield })
+		.isEmpty.if({ inval = nil.yield });
+	}
+
+	asStream {
+		^Routine({ arg inval; this.embedInStream(inval) })
+	}
+}
