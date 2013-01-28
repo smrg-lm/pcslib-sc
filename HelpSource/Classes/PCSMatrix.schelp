@@ -153,6 +153,18 @@ METHOD:: type
 Returns the name of the creation procedure of the matrix.
 returns:: A link::Classes/Symbol::.
 
+METHOD:: row
+Returns the row strong::n:: of the matrix.
+ARGUMENT:: n
+An link::Classes/Integer::.
+returns:: An link::Classes/Array:: or code::nil::.
+
+METHOD:: col
+Returns the column strong::n:: of the matrix.
+ARGUMENT:: n
+An link::Classes/Integer::.
+returns:: An link::Classes/Array:: or code::nil::.
+
 METHOD:: rowSize
 Returns the number of rows.
 returns:: An link::Classes/Integer::.

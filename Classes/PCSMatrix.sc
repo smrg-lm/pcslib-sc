@@ -359,6 +359,14 @@ PCSMatrix {
 		});
 	}
 
+	row { arg n;
+		^this.matrix.at(n);
+	}
+
+	col { arg n;
+		^this.matrix.flop.at(n);
+	}
+
 	rowSize {
 		^this.matrix.size;
 	}
