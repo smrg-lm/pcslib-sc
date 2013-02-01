@@ -549,7 +549,7 @@ PCS : OrderedIdentitySet {
 		switch( op,
 			\t, { arr = this.tMatrix(that); },
 			\it, { arr = this.itMatrix(that); },
-			{ Error("op must be \t or \it").throw }
+			{ Error("op must be 't' or 'it'").throw }
 		);
 		aux = Array.fill(12, 0).dup(subset.size);
 
