@@ -26,18 +26,22 @@ PCSChain : List {
 	}
 
 	candidates { arg postList = true;
-		var pcs, normName, subsets;
+		var titOp, auxPcs;
 
 		if(this.isEmpty, {
 			candList = norm.binpart;
 		}, {
 			candList = [];
-			normName = this.norm.name;
-			pcs = this.last;
-			subsets = (0..11).as(PCS).subsets(this.norm.cardinal - pcs.cardinal);
-			subsets.do({ arg i;
-				if((pcs union: i).name == normName, {
-					candList = candList.add([i]);
+			titOp = this.norm.invariants(this.last, this.last, \t);
+			titOp.do({ arg n;
+				candList = candList.add([(this.norm.t(n) - this.last).sort]);
+			});
+			// check when this is necessary
+			titOp = this.norm.invariants(this.last, this.last, \it);
+			titOp.do({ arg n;
+				auxPcs = [(this.norm.i.t(n) - this.last).sort];
+				if(candList.includesEqual(auxPcs).not, {
+					candList = candList.add(auxPcs);
 				});
 			});
 		});
