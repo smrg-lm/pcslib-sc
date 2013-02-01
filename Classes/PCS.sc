@@ -324,10 +324,29 @@ PCS : OrderedIdentitySet {
 			ret = ret.collectAs({ arg i; i.asArray }, Array); // ...fix
 			// and doesn't gives the same order in different excecutions
 		});
+
+		// sort internally
 		ret = ret.collect({ arg i;
-			i.sort({ arg x, y;
-				x.size.perform(sortOp, y.size);
+			i.sort({ arg a, b;
+				a = a.asArray;
+				b = b.asArray;
+				if(a.size == b.size, {
+					a == PCS.lexMin(a, b);
+				}, {
+					a.size.perform(sortOp, b.size);
+				});
 			})
+		});
+
+		// sort externally
+		ret = ret.sort({ arg a, b;
+			a = a.at(0).asArray;
+			b = b.at(0).asArray;
+			if(a.size == b.size, {
+				a == PCS.lexMin(a, b);
+			}, {
+				a.size < b.size;
+			});
 		});
 
 		^ret;
