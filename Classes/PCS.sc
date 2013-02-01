@@ -199,27 +199,19 @@ PCS : OrderedIdentitySet {
 	}
 
 	*lexMin { arg arr1, arr2;
-			var pos = 0, notBreak = true;
-			var a, b, ret;
+		var i = 0;
 
-			ret = arr1;
-
-			while({pos < (arr1.size - 1) and: notBreak}, {
-				a = arr1.at(pos + 1) - arr1.at(pos);
-				b = arr2.at(pos + 1) - arr2.at(pos);
-
-				if(b < a, {
-					ret = arr2;
-					notBreak = false;
-				}, {
-					if(a < b, {
-						notBreak = false;
-					});
+		^block({ arg break;
+			while({ i < arr1.size }, {
+				case({ arr1.at(i) < arr2.at(i) }, {
+					break.value(arr1);
+				}, { arr1.at(i) > arr2.at(i) }, {
+					break.value(arr2);
 				});
-
-				pos = pos + 1;
+				i = i + 1;
 			});
-			^ret;
+			arr1;
+		});
 	}
 
 	cardinal { ^this.size; }
