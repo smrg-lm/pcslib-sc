@@ -55,8 +55,8 @@ Optionally post the next list of candidates.
 returns:: code::this::.
 
 METHOD:: scores
-Returns the scores of the available candidates.
-returns:: An link::Classes/Array:: of scores.
+Score the candidates according their contribution of new PCs in the chain or, if the emphasis::aggregate:: set is complete, according the distance of the PCs added to their previous presentation.
+returns:: An link::Classes/Array:: of scores, the indexes matches with the candidate list in link::Classes/PCSChain#-candList::.
 
 
 
