@@ -576,6 +576,28 @@ PCS : OrderedIdentitySet {
 		^ret;
 	}
 
+	// overwrite Object-pairs
+	pairs {
+		var arr = this.asArray;
+		var ret = [];
+
+		arr.do({ arg a, i;
+			arr[i+1..].do({ arg b;
+				ret = ret.add([a, b].as(PCS));
+			});
+		});
+
+		^ret;
+	}
+
+	*numberOfPairs { arg n;
+		^((n.pow(2) - n) div: 2);
+	}
+
+	numberOfPairs {
+		^PCS.numberOfPairs(this.size);
+	}
+
 	*numberOfSubsets { arg k, n = 12;
 		^n.factorial / (k.factorial * (n - k).factorial)
 	}

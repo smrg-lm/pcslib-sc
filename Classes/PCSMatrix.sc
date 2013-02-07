@@ -295,9 +295,23 @@ PCSMatrix {
 	}
 
 	// cm_ana
-	//frag
+	frag {
+		var pcs, t = 0;
+		var ret = 0;
 
-	//spar
+		this.rowSize.do({ arg i;
+			this.colSize.do({ arg j;
+				pcs = this.matrix[i][j];
+				if(pcs.isEmpty.not, { // fix empty matrix pos to [[PCS[]]]?
+					t = t + pcs.size;
+					ret = ret + pcs.numberOfPairs;
+				});
+			});
+		});
+
+		^(1 - (ret / PCS.numberOfPairs(t)));
+	}
+
 	spar {
 		var n = this.rowSize * this.colSize;
 		var f = 0;

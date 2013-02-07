@@ -71,6 +71,13 @@ SUBSECTION:: Useful Numbers for Pre-Calculation
 
 NOTE:: There are instance methods variants with code::n = this.size:: by default.::
 
+METHOD:: numberOfPairs
+The number of pairs of elements among a set of emphasis::n:: elements.
+ARGUMENT:: n
+Number of elements. An link::Classes/Integer::.
+returns::
+An link::Classes/Integer::.
+
 METHOD:: numberOfPermutations
 The number of permutations of emphasis::n:: elements.
 ARGUMENT:: n
@@ -420,6 +427,11 @@ warning::Broken, may be removed.::
 METHOD:: powerset
 Same as link::Classes/Array#-powerset::.
 
+METHOD:: pairs
+Returns all the pairs of PCs of this link::Classes/PCS:: as link::Clases/PCS::s.
+returns:: An link::Classes/Array:: of link::Classes/PCS::s.
+
+
 
 SUBSECTION:: Data Struture Operations
 
@@ -431,6 +443,10 @@ returns:: code::this::.
 
 
 SUBSECTION:: Useful Numbers for Pre-Calculation (Instance Methods)
+
+METHOD:: numberOfPairs
+The number of pairs of PCs of this link::Classes/PCS::.
+returns:: An link::Classes/Integer::.
 
 METHOD:: numberOfPermutations
 The number of permutations of this link::Classes/PCS::.
