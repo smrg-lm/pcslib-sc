@@ -428,7 +428,7 @@ METHOD:: powerset
 Same as link::Classes/Array#-powerset::.
 
 METHOD:: pairs
-Returns all the pairs of PCs of this link::Classes/PCS:: as link::Clases/PCS::s.
+Returns all the pairs of PCs of this link::Classes/PCS:: as link::Classes/PCS::s.
 returns:: An link::Classes/Array:: of link::Classes/PCS::s.
 
 
